@@ -15,7 +15,6 @@ namespace LmuOverlay
         private rF2Scoring _scoring = new rF2Scoring();
         private int playerID;
         private DispatcherTimer _timer;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -87,6 +86,8 @@ namespace LmuOverlay
 
                         rF2Wheel[] wheels = vehicle.mWheels;
                         BreakTmpDisplay(wheels);
+                        TyreTmpDisplay(wheels);
+                        TyreWearDisplay(wheels);
 
                     }
                 }
@@ -133,6 +134,72 @@ namespace LmuOverlay
             FrontRightBreakTmp.Text = Math.Round(wheels[1].mBrakeTemp - 273.15, 1).ToString();
             RearLeftBreakTmp.Text = Math.Round(wheels[2].mBrakeTemp - 273.15, 1).ToString();
             RearRightBreakTmp.Text = Math.Round(wheels[3].mBrakeTemp - 273.15, 1).ToString();
+        }
+
+        private void TyreTmpDisplay(rF2Wheel[] wheels)
+        {
+            FrontLeftWheelTmp.Text = Math.Round(wheels[0].mTireCarcassTemperature - 273.15, 1).ToString();
+            if (wheels[0].mDetached == 1)
+            {
+                FrontLeftWheelTmp.Text = "-";
+                FrontLeftWheelTmp.Foreground = Brushes.Red;
+            }
+            else
+                FrontLeftWheelTmp.Foreground = Brushes.White;
+
+            FrontRightWheelTmp.Text = Math.Round(wheels[1].mTireCarcassTemperature - 273.15, 1).ToString();
+            if (wheels[1].mDetached == 1)
+            {
+                FrontRightWheelTmp.Text = "-";
+                FrontRightWheelTmp.Foreground = Brushes.Red;
+            }
+            else
+                FrontRightWheelTmp.Foreground = Brushes.White;
+
+            RearLeftWheelTmp.Text = Math.Round(wheels[2].mTireCarcassTemperature - 273.15, 1).ToString();
+            if (wheels[2].mDetached == 1)
+            {
+                RearLeftWheelTmp.Text = "-";
+                RearLeftWheelTmp.Foreground = Brushes.Red;
+            }
+            else
+                RearLeftWheelTmp.Foreground = Brushes.White;
+
+            RearRightWheelTmp.Text = Math.Round(wheels[3].mTireCarcassTemperature - 273.15, 1).ToString();
+            if (wheels[3].mDetached == 1)
+            {
+                RearRightWheelTmp.Text = "-";
+                RearRightWheelTmp.Foreground = Brushes.Red;
+            }
+            else
+                RearRightWheelTmp.Foreground = Brushes.White;
+        }
+
+        private void TyreWearDisplay(rF2Wheel[] wheels)
+        {
+            FrontLeftWheelWear.Text = Math.Round(wheels[0].mWear * 100, 0).ToString() + "%";
+            if (wheels[0].mFlat == 1 || wheels[0].mDetached == 1) 
+                FrontLeftWheelWear.Foreground = Brushes.Red;
+            else
+                FrontLeftWheelWear.Foreground = Brushes.White;
+
+            FrontRightWheelWear.Text = Math.Round(wheels[1].mWear * 100, 0).ToString() + "%";
+            if (wheels[1].mFlat == 1 || wheels[1].mDetached == 1)
+                FrontRightWheelWear.Foreground = Brushes.Red;
+            else
+                FrontRightWheelWear.Foreground = Brushes.White;
+
+            RearLeftWheelWear.Text = Math.Round(wheels[2].mWear * 100, 0).ToString() + "%";
+            if (wheels[2].mFlat == 1 || wheels[2].mDetached == 1)
+                RearLeftWheelWear.Foreground = Brushes.Red;
+            else
+                RearLeftWheelWear.Foreground = Brushes.White;
+            
+            RearRightWheelWear.Text = Math.Round(wheels[3].mWear * 100, 0).ToString() + "%";
+            if (wheels[3].mFlat == 1 || wheels[3].mDetached == 1)
+                RearRightWheelWear.Foreground = Brushes.Red;
+            else
+                RearRightWheelWear.Foreground = Brushes.White;
         }
 
         private void GetPlayerID()

@@ -16,8 +16,9 @@
                 <RowDefinition Height=".60*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".40*"/>
-                <ColumnDefinition Width=".60*"/>
+                <ColumnDefinition Width=".20*"/>
+                <ColumnDefinition Width=".30*"/>
+                <ColumnDefinition Width=".20*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="1" Grid.Column="0">
@@ -93,10 +94,14 @@
 
 
             <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                <TextBlock Name="GearText" Text="" Foreground="#000000" FontSize="60" FontWeight="Black" HorizontalAlignment="Center"/>
-                <TextBlock Name="SpeedText" Text="0" Foreground="White" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Name="GearText" Text="N" Foreground="#000000" FontSize="60" FontWeight="Black" HorizontalAlignment="Center"/>
+                <TextBlock Name="SpeedText" Text="0" Foreground="#FFFFFF" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"/>
                 <TextBlock Name="RpmText" Text="0" Foreground="#AAAAAA" FontSize="20" HorizontalAlignment="Center" />
             </StackPanel>
+
+            <Grid Grid.Column="2" Grid.Row="1">
+                
+            </Grid>
         </Grid>
             
     </Border>
