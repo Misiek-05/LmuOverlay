@@ -21,6 +21,30 @@
                 <ColumnDefinition Width=".20*"/>
             </Grid.ColumnDefinitions>
 
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Name="RpmLight1" Grid.Column="0" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight2" Grid.Column="1" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight3" Grid.Column="2" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight4" Grid.Column="3" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight5" Grid.Column="4" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight6" Grid.Column="5" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight7" Grid.Column="6" Fill="Transparent" Margin="5,5,5,5"/>
+                <Rectangle Name="RpmLight8" Grid.Column="7" Fill="Transparent" Margin="5,5,5,5"/>
+                
+            </Grid>
+            
+            
             <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height=".1*"/>
@@ -34,7 +58,7 @@
                 <Grid Grid.Row="0">
                     <TextBlock Text="TYRE TMP" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" />
                 </Grid>
-                
+
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -100,24 +124,37 @@
                     <ColumnDefinition Width=".1*"/>
                 </Grid.ColumnDefinitions>
 
-                <ProgressBar Grid.Column="0" Name="BrakeProgressBar" Minimum="0" Maximum="1" Value="0" Foreground="Red" Background="Black" Orientation="Vertical"/>
+                <ProgressBar Grid.Column="0" Name="BrakeProgressBar" Minimum="0" Maximum="1" Value="0" Foreground="Red" Background="Transparent" Orientation="Vertical" Margin="2, 2, 2, 2" BorderBrush="Transparent"/>
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height=".1*"/>
                         <RowDefinition Height=".9*"/>
                     </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".5*"/>
+                            <ColumnDefinition Width=".5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="0" Fill="White"/>
+                        <ProgressBar Name="SteeringLeftProgressBar" Grid.Column="0" Minimum="0" Maximum="1" Value="1" Foreground="Black" Background="White" BorderBrush="Transparent" />
+                        <ProgressBar Name="SteeringRightProgressBar" Grid.Column="1" Minimum="0" Maximum="1" Value="0" Foreground="White" Background="Black" BorderBrush="Transparent" />
+
+                    </Grid>
+
                     <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
                         <TextBlock Name="GearText" Text="N" Foreground="#0000FF" FontSize="60" FontWeight="Black" HorizontalAlignment="Center"/>
                         <TextBlock Name="SpeedText" Text="0" Foreground="#FFFFFF" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock Name="RpmText" Text="0" Foreground="#AAAAAA" FontSize="20" HorizontalAlignment="Center" />
                     </StackPanel>
+
                 </Grid>
 
-                <ProgressBar Grid.Column="2" Name="ThrottleProgressBar" Minimum="0" Maximum="1" Value="0" Foreground="Green" Background="Black" Orientation="Vertical"/>
+                <ProgressBar Grid.Column="2" Name="ThrottleProgressBar" Minimum="0" Maximum="1" Value="0" Foreground="Green" Background="Transparent" Orientation="Vertical" Margin="2, 2, 2, 2" BorderBrush="Transparent"/>
 
             </Grid>
-            
+
 
             <Grid Grid.Column="2" Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -126,6 +163,8 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+
+                <TextBlock Name="CurrentLapTime" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <Grid Grid.Row="3">
                     <Grid.RowDefinitions>
@@ -137,14 +176,16 @@
                         <ColumnDefinition Width=".25*"/>
                         <ColumnDefinition Width=".75*"/>
                     </Grid.ColumnDefinitions>
-
-
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="FUEL" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-                    <ProgressBar Name="FuelProgressBar" Foreground="Red" Background="Black" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="100" Value="50"/>
-                    <TextBlock Name="FuelText" Grid.Row="3" Grid.Column="1" Text="50.0%" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+    
+                    
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="FUEL" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                    <ProgressBar Name="FuelProgressBar" Foreground="Red" Background="Transparent" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Margin="2, 2, 2, 2" BorderBrush="Transparent" />
+                    <TextBlock Name="FuelText" Grid.Row="2" Grid.Column="1" Text="50.0%" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
                 </Grid>
             </Grid>
         </Grid>
-            
+
     </Border>
 </Window>
+    
+    

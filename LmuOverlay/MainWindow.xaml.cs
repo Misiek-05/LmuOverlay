@@ -1,10 +1,12 @@
 ﻿using LmuOverlay.rFactor2Data;
 using System;
+using System.Drawing;
 using System.Runtime.Intrinsics.Arm;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace LmuOverlay
@@ -94,6 +96,8 @@ namespace LmuOverlay
                         FuelDisplay(vehicle);
                         ThrottleDisplay(vehicle);
                         BrakeDisplay(vehicle);
+                        SteeringDisplay(vehicle);
+
                     }
                 }
             }
@@ -102,6 +106,19 @@ namespace LmuOverlay
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void SteeringDisplay(rF2VehicleTelemetry vehicle)
+        {
+            double steering = vehicle.mUnfilteredSteering;
+
+            if (steering < 0)
+            {
+                SteeringLeftProgressBar.Value = 1.0 + steering;
+            } else
+            {
+                SteeringRightProgressBar.Value = steering;
+            }
         }
 
         private void ThrottleDisplay(rF2VehicleTelemetry vehicle)
@@ -139,9 +156,47 @@ namespace LmuOverlay
             }
         }
 
+
         private void RpmDisplay(double rpm)
         {
             RpmText.Text = $"RPM: {rpm:F0}";
+            if (rpm < 6000)
+            {
+                RpmLight1.Fill = Brushes.Transparent;
+                RpmLight2.Fill = Brushes.Transparent;
+                RpmLight3.Fill = Brushes.Transparent;
+                RpmLight4.Fill = Brushes.Transparent;
+                RpmLight5.Fill = Brushes.Transparent;
+                RpmLight6.Fill = Brushes.Transparent;
+                RpmLight7.Fill = Brushes.Transparent;
+                RpmLight8.Fill = Brushes.Transparent;
+            }
+            if (rpm > 6000)
+                RpmLight1.Fill = Brushes.Green;
+            if (rpm > 6100)
+                RpmLight2.Fill = Brushes.Green;
+            if (rpm > 6200)
+                RpmLight3.Fill = Brushes.Green;
+            if (rpm > 6300)
+                RpmLight4.Fill = Brushes.Red;
+            if (rpm > 6400)
+                RpmLight5.Fill = Brushes.Red;
+            if (rpm > 6500)
+                RpmLight6.Fill = Brushes.Red;
+            if (rpm > 6600)
+                RpmLight7.Fill = Brushes.Blue;
+            if (rpm > 6700)
+            {
+                RpmLight1.Fill = Brushes.Blue;
+                RpmLight2.Fill = Brushes.Blue;
+                RpmLight3.Fill = Brushes.Blue;
+                RpmLight4.Fill = Brushes.Blue;
+                RpmLight5.Fill = Brushes.Blue;
+                RpmLight6.Fill = Brushes.Blue;
+                RpmLight7.Fill = Brushes.Blue;
+                RpmLight8.Fill = Brushes.Blue;
+            }
+
         }
 
         private void BreakTmpDisplay(rF2Wheel[] wheels)
@@ -193,15 +248,15 @@ namespace LmuOverlay
 
         private SolidColorBrush GetTyreTmpColor(double TyreTmp)
         {
-            if (TyreTmp < 70)
+            if (TyreTmp < 50)
                 return Brushes.LightBlue;
-            if (TyreTmp < 80)
+            if (TyreTmp < 65)
                 return Brushes.LightGreen;
-            if (TyreTmp < 95)
+            if (TyreTmp < 85)
                 return Brushes.LimeGreen;
-            if (TyreTmp < 105)
+            if (TyreTmp < 95)
                 return Brushes.Yellow;
-            return Brushes.Red; // over 105 Celsius
+            return Brushes.Red; // over 95 Celsius
         }
 
         private void TyreWearDisplay(rF2Wheel[] wheels)
@@ -249,9 +304,17 @@ namespace LmuOverlay
                 if (vehicleScoring.mIsPlayer == 1)
                 {
                     playerID = vehicleScoring.mID;
+                    //CurrentLapTimeDisplay(vehicleScoring);
                     break;
                 }
             }
+        }
+
+        private void CurrentLapTimeDisplay(rF2VehicleScoring vehicleScoring)
+        {
+
+            double minutes = vehicleScoring.mTimeIntoLap / 60;
+            CurrentLapTime.Text = vehicleScoring.mTimeIntoLap.ToString();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
