@@ -1,6 +1,8 @@
 ﻿using LmuOverlay.rFactor2Data;
 using System;
+using System.Runtime.Intrinsics.Arm;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -89,6 +91,9 @@ namespace LmuOverlay
                         TyreTmpDisplay(wheels);
                         TyreWearDisplay(wheels);
 
+                        FuelDisplay(vehicle);
+                        ThrottleDisplay(vehicle);
+                        BrakeDisplay(vehicle);
                     }
                 }
             }
@@ -97,6 +102,17 @@ namespace LmuOverlay
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void ThrottleDisplay(rF2VehicleTelemetry vehicle)
+        {
+            double throttleInput = vehicle.mUnfilteredThrottle;
+            ThrottleProgressBar.Value = throttleInput;
+        }
+        private void BrakeDisplay(rF2VehicleTelemetry vehicle)
+        {
+            double brakeInput = vehicle.mUnfilteredBrake;
+            BrakeProgressBar.Value = brakeInput;
         }
 
         private void SpeedKmhDisplay(double speedKmh)
@@ -130,76 +146,99 @@ namespace LmuOverlay
 
         private void BreakTmpDisplay(rF2Wheel[] wheels)
         {
-            FrontLeftBreakTmp.Text = Math.Round(wheels[0].mBrakeTemp - 273.15, 1).ToString();
-            FrontRightBreakTmp.Text = Math.Round(wheels[1].mBrakeTemp - 273.15, 1).ToString();
-            RearLeftBreakTmp.Text = Math.Round(wheels[2].mBrakeTemp - 273.15, 1).ToString();
-            RearRightBreakTmp.Text = Math.Round(wheels[3].mBrakeTemp - 273.15, 1).ToString();
+            BreakTmpDisplayHelper(FrontLeftBreakTmp, wheels[0]);
+            BreakTmpDisplayHelper(FrontRightBreakTmp, wheels[1]);
+            BreakTmpDisplayHelper(RearLeftBreakTmp, wheels[2]);
+            BreakTmpDisplayHelper(RearRightBreakTmp, wheels[3]);
+        }
+
+         private void BreakTmpDisplayHelper(TextBlock textBlock, rF2Wheel wheel)
+        {
+            textBlock.Text = Math.Round(wheel.mBrakeTemp - 273.15, 1).ToString();
+            textBlock.Foreground = GetBreakTmpColor(wheel.mBrakeTemp - 273.15);
+        }
+
+        private SolidColorBrush GetBreakTmpColor(double breakTmp)
+        {
+            if (breakTmp < 250)
+                return Brushes.LightBlue;
+            if (breakTmp < 450)
+                return Brushes.LightGreen;
+            if (breakTmp < 650)
+                return Brushes.Green;
+            if (breakTmp < 750)
+                return Brushes.Yellow;
+            return Brushes.Red; // over 750 Celsius
         }
 
         private void TyreTmpDisplay(rF2Wheel[] wheels)
         {
-            FrontLeftWheelTmp.Text = Math.Round(wheels[0].mTireCarcassTemperature - 273.15, 1).ToString();
-            if (wheels[0].mDetached == 1)
-            {
-                FrontLeftWheelTmp.Text = "-";
-                FrontLeftWheelTmp.Foreground = Brushes.Red;
-            }
-            else
-                FrontLeftWheelTmp.Foreground = Brushes.White;
+            TyreTmpDisplayHelper(FrontLeftWheelTmp, wheels[0]);
+            TyreTmpDisplayHelper(FrontRightWheelTmp, wheels[1]);
+            TyreTmpDisplayHelper(RearLeftWheelTmp, wheels[2]);
+            TyreTmpDisplayHelper(RearRightWheelTmp, wheels[3]);
+        }
 
-            FrontRightWheelTmp.Text = Math.Round(wheels[1].mTireCarcassTemperature - 273.15, 1).ToString();
-            if (wheels[1].mDetached == 1)
+        private void TyreTmpDisplayHelper(TextBlock textBlock, rF2Wheel wheel)
+        {
+            textBlock.Text = Math.Round(wheel.mTireCarcassTemperature - 273.15, 1).ToString();
+            if (wheel.mDetached == 1)
             {
-                FrontRightWheelTmp.Text = "-";
-                FrontRightWheelTmp.Foreground = Brushes.Red;
+                textBlock.Text = "-";
+                textBlock.Foreground = Brushes.Red;
             }
             else
-                FrontRightWheelTmp.Foreground = Brushes.White;
+                textBlock.Foreground = GetTyreTmpColor(wheel.mTireCarcassTemperature - 273.15);
+        }
 
-            RearLeftWheelTmp.Text = Math.Round(wheels[2].mTireCarcassTemperature - 273.15, 1).ToString();
-            if (wheels[2].mDetached == 1)
-            {
-                RearLeftWheelTmp.Text = "-";
-                RearLeftWheelTmp.Foreground = Brushes.Red;
-            }
-            else
-                RearLeftWheelTmp.Foreground = Brushes.White;
-
-            RearRightWheelTmp.Text = Math.Round(wheels[3].mTireCarcassTemperature - 273.15, 1).ToString();
-            if (wheels[3].mDetached == 1)
-            {
-                RearRightWheelTmp.Text = "-";
-                RearRightWheelTmp.Foreground = Brushes.Red;
-            }
-            else
-                RearRightWheelTmp.Foreground = Brushes.White;
+        private SolidColorBrush GetTyreTmpColor(double TyreTmp)
+        {
+            if (TyreTmp < 70)
+                return Brushes.LightBlue;
+            if (TyreTmp < 80)
+                return Brushes.LightGreen;
+            if (TyreTmp < 95)
+                return Brushes.LimeGreen;
+            if (TyreTmp < 105)
+                return Brushes.Yellow;
+            return Brushes.Red; // over 105 Celsius
         }
 
         private void TyreWearDisplay(rF2Wheel[] wheels)
         {
-            FrontLeftWheelWear.Text = Math.Round(wheels[0].mWear * 100, 0).ToString() + "%";
-            if (wheels[0].mFlat == 1 || wheels[0].mDetached == 1) 
-                FrontLeftWheelWear.Foreground = Brushes.Red;
-            else
-                FrontLeftWheelWear.Foreground = Brushes.White;
+            TyreWearDisplayHelper(FrontLeftWheelWear, wheels[0]);
+            TyreWearDisplayHelper(FrontRightWheelWear, wheels[1]);
+            TyreWearDisplayHelper(RearLeftWheelWear, wheels[2]);
+            TyreWearDisplayHelper(RearRightWheelWear, wheels[3]);
+        }
 
-            FrontRightWheelWear.Text = Math.Round(wheels[1].mWear * 100, 0).ToString() + "%";
-            if (wheels[1].mFlat == 1 || wheels[1].mDetached == 1)
-                FrontRightWheelWear.Foreground = Brushes.Red;
+        private void TyreWearDisplayHelper(TextBlock textBlock, rF2Wheel wheel)
+        {
+            textBlock.Text = Math.Round(wheel.mWear * 100, 0).ToString() + "%";
+            if (wheel.mFlat == 1 || wheel.mDetached == 1)
+                textBlock.Foreground = Brushes.Red;
             else
-                FrontRightWheelWear.Foreground = Brushes.White;
+                textBlock.Foreground = GetTyreWearColor(wheel.mWear);
+        }
 
-            RearLeftWheelWear.Text = Math.Round(wheels[2].mWear * 100, 0).ToString() + "%";
-            if (wheels[2].mFlat == 1 || wheels[2].mDetached == 1)
-                RearLeftWheelWear.Foreground = Brushes.Red;
-            else
-                RearLeftWheelWear.Foreground = Brushes.White;
-            
-            RearRightWheelWear.Text = Math.Round(wheels[3].mWear * 100, 0).ToString() + "%";
-            if (wheels[3].mFlat == 1 || wheels[3].mDetached == 1)
-                RearRightWheelWear.Foreground = Brushes.Red;
-            else
-                RearRightWheelWear.Foreground = Brushes.White;
+        private SolidColorBrush GetTyreWearColor(double TyreWear)
+        {
+            if (TyreWear < 0.3)
+                return Brushes.Red;
+            if (TyreWear < 0.5)
+                return Brushes.Orange;
+            if (TyreWear < 0.7)
+                return Brushes.Yellow;
+            if (TyreWear < 0.85)
+                return Brushes.LightGreen;
+            return Brushes.LimeGreen;
+        }
+
+        private void FuelDisplay(rF2VehicleTelemetry vehicle)
+        {
+            FuelProgressBar.Maximum = vehicle.mFuelCapacity;
+            FuelProgressBar.Value = vehicle.mFuel;
+            FuelText.Text = Math.Round(vehicle.mFuel, 1).ToString() + "%";
         }
 
         private void GetPlayerID()
