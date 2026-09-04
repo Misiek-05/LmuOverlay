@@ -1,7 +1,5 @@
 ﻿using LmuOverlay.rFactor2Data;
 using System;
-using System.Drawing;
-using System.Runtime.Intrinsics.Arm;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +15,11 @@ namespace LmuOverlay
         private MappedBuffer<rF2Scoring> _scoringBuffer;
         private rF2Telemetry _telemetry = new rF2Telemetry();
         private rF2Scoring _scoring = new rF2Scoring();
+
         private int playerID;
+        private rF2VehicleScoring playerVehicle;
+        private short currentLap;
+
         private DispatcherTimer _timer;
         public MainWindow()
         {
@@ -51,6 +53,7 @@ namespace LmuOverlay
             }
 
             playerID = 0;
+            currentLap = 0;
 
             _timer = new DispatcherTimer
             {
@@ -98,6 +101,7 @@ namespace LmuOverlay
                         BrakeDisplay(vehicle);
                         SteeringDisplay(vehicle);
 
+                        TimeDisplay();
                     }
                 }
             }
@@ -106,6 +110,69 @@ namespace LmuOverlay
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void TimeDisplay()
+        {
+            if (currentLap != playerVehicle.mTotalLaps)
+            {
+                currentLap = playerVehicle.mTotalLaps;
+                CurrentSector1Time.Text = " ";
+                CurrentSector2Time.Text = " ";
+                CurrentSector3Time.Text = " ";
+                CurrentLapTime.Text = " ";
+
+                CurrentSector1TimeStatus.Fill = Brushes.Transparent;
+                CurrentSector2TimeStatus.Fill = Brushes.Transparent;
+                CurrentSector3TimeStatus.Fill = Brushes.Transparent;
+
+
+                TimeDisplayHelper(BestSector1Time, playerVehicle.mBestLapSector1);
+                TimeDisplayHelper(BestSector2Time, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
+                TimeDisplayHelper(BestSector3Time, playerVehicle.mBestLapTime - playerVehicle.mBestLapSector2);
+                TimeDisplayHelper(BestLapTime, playerVehicle.mBestLapTime);
+            }
+
+            double time = _scoring.mScoringInfo.mCurrentET - playerVehicle.mLapStartET;
+            TimeDisplayHelper(CurrentLapTime, time);
+
+            switch (playerVehicle.mSector)
+            {
+                case 1: // Sector 1
+                    {
+                        TimeDisplayHelper(CurrentSector1Time, time);
+                        //BetterSectorDisplay(CurrentSector1TimeStatus, time, playerVehicle.mBestLapSector1);
+                        break;
+                    }
+                case 2: // Sector 2
+                    {
+                        TimeDisplayHelper(CurrentSector2Time, time - playerVehicle.mCurSector1);
+                        //BetterSectorDisplay(CurrentSector2TimeStatus, time - playerVehicle.mCurSector1, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
+                        break;
+                    }
+                case 0: // Sector 3
+                    {
+                        TimeDisplayHelper(CurrentSector3Time, time - playerVehicle.mCurSector2);
+                        //BetterSectorDisplay(CurrentSector3TimeStatus, time - playerVehicle.mCurSector2, playerVehicle.mBestLapTime - playerVehicle.mBestLapSector2);
+                        break;
+                    }
+            }
+
+        }
+
+        private void BetterSectorDisplay(Rectangle rectangle, double currentSectorTime, double bestSectorTime)
+        {
+            if (currentSectorTime < bestSectorTime)
+                rectangle.Fill = Brushes.Yellow;
+            else
+                rectangle.Fill = Brushes.Green;
+            
+        }
+        private void TimeDisplayHelper(TextBlock textBlock, double time)
+        {
+            int minutes = (int)(time / 60);
+            double seconds = time % 60;
+            textBlock.Text = $"{minutes}:{seconds:00.000}";
         }
 
         private void SteeringDisplay(rF2VehicleTelemetry vehicle)
@@ -304,17 +371,10 @@ namespace LmuOverlay
                 if (vehicleScoring.mIsPlayer == 1)
                 {
                     playerID = vehicleScoring.mID;
-                    //CurrentLapTimeDisplay(vehicleScoring);
+                    playerVehicle = vehicleScoring;
                     break;
                 }
             }
-        }
-
-        private void CurrentLapTimeDisplay(rF2VehicleScoring vehicleScoring)
-        {
-
-            double minutes = vehicleScoring.mTimeIntoLap / 60;
-            CurrentLapTime.Text = vehicleScoring.mTimeIntoLap.ToString();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
