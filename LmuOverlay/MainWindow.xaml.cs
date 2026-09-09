@@ -15,10 +15,16 @@ namespace LmuOverlay
         private MappedBuffer<rF2Scoring> _scoringBuffer;
         private rF2Telemetry _telemetry = new rF2Telemetry();
         private rF2Scoring _scoring = new rF2Scoring();
+        private TelemetryData _telemetryData;
 
         private int playerID;
         private rF2VehicleScoring playerVehicle;
+        private rF2VehicleTelemetry vehicle;
         private short currentLap;
+        private int currentSector;
+        private bool showingLastLap = false;
+        private DateTime lastLapDisplayUntil;
+        private bool isTelemetryDataCreated = false;
 
         private DispatcherTimer _timer;
         public MainWindow()
@@ -54,6 +60,7 @@ namespace LmuOverlay
 
             playerID = 0;
             currentLap = 0;
+            currentSector = 2;
 
             _timer = new DispatcherTimer
             {
@@ -69,11 +76,17 @@ namespace LmuOverlay
             try
             {
                 _telemetryBuffer.GetMappedData(ref _telemetry);
+                
                 GetPlayerID();
 
                 for (int i = 0; i < _telemetry.mNumVehicles; i++)
                 {
-                    rF2VehicleTelemetry vehicle = _telemetry.mVehicles[i];
+                    vehicle = _telemetry.mVehicles[i];
+
+                    if (!isTelemetryDataCreated) {
+                        _telemetryData = new TelemetryData(vehicle.mTrackName);
+                        isTelemetryDataCreated = true;
+                    }
 
                     if (vehicle.mID == playerID)
                     {
@@ -114,18 +127,13 @@ namespace LmuOverlay
 
         private void TimeDisplay()
         {
+            
+
             if (currentLap != playerVehicle.mTotalLaps)
             {
+                lastLapDisplayUntil = DateTime.Now.AddSeconds(2);
+                showingLastLap = true;
                 currentLap = playerVehicle.mTotalLaps;
-                CurrentSector1Time.Text = " ";
-                CurrentSector2Time.Text = " ";
-                CurrentSector3Time.Text = " ";
-                CurrentLapTime.Text = " ";
-
-                CurrentSector1TimeStatus.Fill = Brushes.Transparent;
-                CurrentSector2TimeStatus.Fill = Brushes.Transparent;
-                CurrentSector3TimeStatus.Fill = Brushes.Transparent;
-
 
                 TimeDisplayHelper(BestSector1Time, playerVehicle.mBestLapSector1);
                 TimeDisplayHelper(BestSector2Time, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
@@ -133,41 +141,63 @@ namespace LmuOverlay
                 TimeDisplayHelper(BestLapTime, playerVehicle.mBestLapTime);
             }
 
+            if (showingLastLap)
+            {
+                if (DateTime.Now < lastLapDisplayUntil)
+                {
+                    TimeDisplayHelper(CurrentLapTime, playerVehicle.mLastLapTime);
+                    TimeDisplayHelper(CurrentSector1Time, playerVehicle.mLastSector1);
+                    TimeDisplayHelper(CurrentSector2Time, playerVehicle.mLastSector2 - playerVehicle.mLastSector1);
+                    TimeDisplayHelper(CurrentSector3Time, playerVehicle.mLastLapTime - playerVehicle.mLastSector2);
+                    BetterSectorDisplay(CurrentSector3TimeStatus, playerVehicle.mLastLapTime - playerVehicle.mLastSector2, playerVehicle.mBestLapTime - playerVehicle.mBestLapSector2);
+                    return;
+                }
+
+                _telemetryData.updateData(vehicle, playerVehicle);
+                _telemetryData.exportDataToCSV();
+                CurrentSector1Time.Text = " ";
+                CurrentSector2Time.Text = " ";
+                CurrentSector3Time.Text = " ";
+
+                CurrentSector1TimeStatus.Fill = Brushes.Transparent;
+                CurrentSector2TimeStatus.Fill = Brushes.Transparent;
+                CurrentSector3TimeStatus.Fill = Brushes.Transparent;
+
+                showingLastLap = false;
+            }
+
             double time = _scoring.mScoringInfo.mCurrentET - playerVehicle.mLapStartET;
             TimeDisplayHelper(CurrentLapTime, time);
 
-            switch (playerVehicle.mSector)
+            if (currentSector != playerVehicle.mSector)
             {
-                case 1: // Sector 1
-                    {
-                        TimeDisplayHelper(CurrentSector1Time, time);
-                        //BetterSectorDisplay(CurrentSector1TimeStatus, time, playerVehicle.mBestLapSector1);
-                        break;
-                    }
-                case 2: // Sector 2
-                    {
-                        TimeDisplayHelper(CurrentSector2Time, time - playerVehicle.mCurSector1);
-                        //BetterSectorDisplay(CurrentSector2TimeStatus, time - playerVehicle.mCurSector1, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
-                        break;
-                    }
-                case 0: // Sector 3
-                    {
-                        TimeDisplayHelper(CurrentSector3Time, time - playerVehicle.mCurSector2);
-                        //BetterSectorDisplay(CurrentSector3TimeStatus, time - playerVehicle.mCurSector2, playerVehicle.mBestLapTime - playerVehicle.mBestLapSector2);
-                        break;
-                    }
+                switch (currentSector)
+                {
+                    case 1:
+                        {
+                            TimeDisplayHelper(CurrentSector1Time, playerVehicle.mCurSector1);
+                            BetterSectorDisplay(CurrentSector1TimeStatus, playerVehicle.mCurSector1, playerVehicle.mBestLapSector1);
+                            break;
+                        }
+                    case 2:
+                        {
+                            TimeDisplayHelper(CurrentSector2Time, playerVehicle.mCurSector2 - playerVehicle.mCurSector1);
+                            BetterSectorDisplay(CurrentSector2TimeStatus, playerVehicle.mCurSector2 - playerVehicle.mCurSector1, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
+                            break;
+                        }
+                }
+                currentSector = playerVehicle.mSector;
             }
-
         }
 
         private void BetterSectorDisplay(Rectangle rectangle, double currentSectorTime, double bestSectorTime)
         {
-            if (currentSectorTime < bestSectorTime)
+            if (currentSectorTime > bestSectorTime)
                 rectangle.Fill = Brushes.Yellow;
             else
                 rectangle.Fill = Brushes.Green;
-            
         }
+
         private void TimeDisplayHelper(TextBlock textBlock, double time)
         {
             int minutes = (int)(time / 60);
