@@ -18,6 +18,7 @@ namespace LmuOverlay
         public int playerID {  get; set; }
         public rF2VehicleScoring playerVehicleScoring { get; set; }
         public rF2VehicleTelemetry playerVehicleTelemetry { get; set; }
+        public byte[] mVehicleClass { get; set; }
 
         public rF2ImportedData() {
             playerID = 0;
@@ -32,6 +33,7 @@ namespace LmuOverlay
                 {
                     playerID = vehicleScoring.mID;
                     playerVehicleScoring = vehicleScoring;
+                    mVehicleClass = vehicleScoring.mVehicleClass;
                     break;
                 }
             }

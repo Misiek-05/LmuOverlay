@@ -5,7 +5,7 @@ namespace LmuOverlay
 {
     public partial class MainWindow : Window
     {
-        public rF2ImportedData _importedData;
+        public rF2ImportedData _importedData = new rF2ImportedData();
 
         public MainWindow()
         {
@@ -19,6 +19,25 @@ namespace LmuOverlay
                 rFactor2Connect();
                 Window telemetryWindow = new TelemetryWindow(_importedData);
                 telemetryWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Can't connect:\n\n{ex}",
+                    "Shared Memory Error"
+                );
+
+                return;
+            }
+        }
+
+        private void LeaderboardWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                rFactor2Connect();
+                Window leaderboardWindow = new LeaderboardWindow(_importedData);
+                leaderboardWindow.Show();
             }
             catch (Exception ex)
             {

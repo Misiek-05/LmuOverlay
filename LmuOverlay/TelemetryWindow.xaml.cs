@@ -51,6 +51,7 @@ namespace LmuOverlay
                 for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
                 {
                     playerVehicleTelemetry = _importedData._telemetry.mVehicles[i];
+                    _importedData.playerVehicleTelemetry = playerVehicleTelemetry;
 
                     if (!isTelemetryDataCreated) {
                         _telemetryData = new TelemetryData(playerVehicleTelemetry.mTrackName);
