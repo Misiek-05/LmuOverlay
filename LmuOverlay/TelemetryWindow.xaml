@@ -43,7 +43,10 @@
                 <Rectangle Name="RpmLight8" Grid.Column="7" Fill="Transparent" Margin="5,5,5,5"/>
                 
             </Grid>
-            
+
+            <Grid Grid.Column="2" Grid.Row="0">
+                <TextBlock Name="TotalLaps" Foreground="White" Text="LAP: 0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+            </Grid>
             
             <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.RowDefinitions>

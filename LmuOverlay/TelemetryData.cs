@@ -33,9 +33,9 @@ namespace LmuOverlay
             this.fileName = $"{trackName}.csv";
 
             if (!File.Exists(this.fileName)) {
-                string header = "mDriverName;fuel;lapTime;sector1;sector2;sector3;" +
-                                "lfWheelWear;rfWheelWear;lrWheelWear;rrWheelWear;" +
-                                "lfWheelTmp;rfWheelTmp;lrWheelTmp;rrWheelTmp\n";
+                string header = "mDriverName,fuel,lapTime,sector1,sector2,sector3," +
+                                "lfWheelWear,rfWheelWear,lrWheelWear,rrWheelWear," +
+                                "lfWheelTmp,rfWheelTmp,lrWheelTmp,rrWheelTmp\n";
                 File.WriteAllText(this.fileName, header);
             }
 
@@ -43,7 +43,7 @@ namespace LmuOverlay
 
         public void updateData(rF2VehicleTelemetry vehicle, rF2VehicleScoring vehicleScoring)
         {
-            this.mDriverName = vehicle.mTrackName;
+            this.mDriverName = vehicleScoring.mDriverName;
             this.fuel = Math.Round(vehicle.mFuel, 1);
             this.lapTime = convertTimeToString(vehicleScoring.mLastLapTime);
             this.sector1 = convertTimeToString(vehicleScoring.mLastSector1);
@@ -69,9 +69,9 @@ namespace LmuOverlay
         public void exportDataToCSV()
         {
             string driver = Encoding.ASCII.GetString(this.mDriverName).TrimEnd('\0');
-            string rowData = $"{driver};{this.fuel};{this.lapTime};{this.sector1};{this.sector2};{this.sector3};" +
-                             $"{this.lfWheelWear};{this.rfWheelWear};{this.lrWheelWear};{this.rrWheelWear};" +
-                             $"{this.lfWheelTmp};{this.rfWheelTmp};{this.lrWheelTmp};{this.rrWheelTmp}\n";
+            string rowData = $"{driver},{this.fuel},{this.lapTime},{this.sector1},{this.sector2},{this.sector3}," +
+                             $"{this.lfWheelWear},{this.rfWheelWear},{this.lrWheelWear},{this.rrWheelWear}," +
+                             $"{this.lfWheelTmp},{this.rfWheelTmp},{this.lrWheelTmp},{this.rrWheelTmp}\n";
             File.AppendAllText(this.fileName, rowData);
         }
     }

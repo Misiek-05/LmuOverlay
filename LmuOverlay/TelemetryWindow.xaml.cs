@@ -11,15 +11,11 @@ namespace LmuOverlay
 {
     public partial class TelemetryWindow : Window
     {
-        private MappedBuffer<rF2Telemetry> _telemetryBuffer;
-        private MappedBuffer<rF2Scoring> _scoringBuffer;
-        private rF2Telemetry _telemetry = new rF2Telemetry();
-        private rF2Scoring _scoring = new rF2Scoring();
+        private rF2ImportedData _importedData;
         private TelemetryData _telemetryData;
+        private rF2VehicleScoring playerVehicleScoring;
+        private rF2VehicleTelemetry playerVehicleTelemetry;
 
-        private int playerID;
-        private rF2VehicleScoring playerVehicle;
-        private rF2VehicleTelemetry vehicle;
         private short currentLap;
         private int currentSector;
         private bool showingLastLap = false;
@@ -27,39 +23,11 @@ namespace LmuOverlay
         private bool isTelemetryDataCreated = false;
 
         private DispatcherTimer _timer;
-        public TelemetryWindow()
+        public TelemetryWindow(rF2ImportedData _importedData)
         {
             InitializeComponent();
+            this._importedData = _importedData;
 
-            _telemetryBuffer = new MappedBuffer<rF2Telemetry>(
-                rFactor2Constants.MM_TELEMETRY_FILE_NAME,
-                false,
-                false
-            );
-
-            _scoringBuffer = new MappedBuffer<rF2Scoring>(
-                rFactor2Constants.MM_SCORING_FILE_NAME,
-                false,
-                false
-            );
-
-            try
-            {
-                _telemetryBuffer.Connect();
-                _scoringBuffer.Connect();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Nie udało się połączyć z LMU Shared Memory:\n\n{ex}",
-                    "Shared Memory Error"
-                );
-
-                return;
-            }
-
-            playerID = 0;
             currentLap = 0;
             currentSector = 2;
 
@@ -76,44 +44,36 @@ namespace LmuOverlay
         {
             try
             {
-                _telemetryBuffer.GetMappedData(ref _telemetry);
-                
-                GetPlayerID();
+                _importedData._telemetryBuffer.GetMappedData(ref _importedData._telemetry);
+                _importedData.GetPlayerID();
+                playerVehicleScoring = _importedData.playerVehicleScoring;
 
-                for (int i = 0; i < _telemetry.mNumVehicles; i++)
+                for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
                 {
-                    vehicle = _telemetry.mVehicles[i];
+                    playerVehicleTelemetry = _importedData._telemetry.mVehicles[i];
 
                     if (!isTelemetryDataCreated) {
-                        _telemetryData = new TelemetryData(vehicle.mTrackName);
+                        _telemetryData = new TelemetryData(playerVehicleTelemetry.mTrackName);
                         isTelemetryDataCreated = true;
                     }
 
-                    if (vehicle.mID == playerID)
+                    if (playerVehicleTelemetry.mID == _importedData.playerID)
                     {
-                        double rpm = vehicle.mEngineRPM;
-                        int gear = vehicle.mGear;
 
-                        double speedMs = Math.Sqrt(
-                            vehicle.mLocalVel.x * vehicle.mLocalVel.x +
-                            vehicle.mLocalVel.y * vehicle.mLocalVel.y +
-                            vehicle.mLocalVel.z * vehicle.mLocalVel.z
-                        );
-                        double speedKmh = speedMs * 3.6;
+                        SpeedKmhDisplay();
+                        GearDisplay();
+                        RpmDisplay();
 
-                        SpeedKmhDisplay(speedKmh);
-                        GearDisplay(gear);
-                        RpmDisplay(rpm);
-
-                        rF2Wheel[] wheels = vehicle.mWheels;
+                        rF2Wheel[] wheels = playerVehicleTelemetry.mWheels;
                         BreakTmpDisplay(wheels);
                         TyreTmpDisplay(wheels);
                         TyreWearDisplay(wheels);
 
-                        FuelDisplay(vehicle);
-                        ThrottleDisplay(vehicle);
-                        BrakeDisplay(vehicle);
-                        SteeringDisplay(vehicle);
+                        CurrentLapDisplay();
+                        FuelDisplay();
+                        ThrottleDisplay();
+                        BrakeDisplay();
+                        SteeringDisplay();
 
                         TimeDisplay();
                     }
@@ -126,35 +86,37 @@ namespace LmuOverlay
             
         }
 
+        private void CurrentLapDisplay()
+        {
+            TotalLaps.Text = $"Lap: {playerVehicleScoring.mTotalLaps}";
+        }
         private void TimeDisplay()
         {
-            
-
-            if (currentLap != playerVehicle.mTotalLaps)
+            if (currentLap != playerVehicleScoring.mTotalLaps)
             {
                 lastLapDisplayUntil = DateTime.Now.AddSeconds(2);
                 showingLastLap = true;
-                currentLap = playerVehicle.mTotalLaps;
+                currentLap = playerVehicleScoring.mTotalLaps;
 
-                TimeDisplayHelper(BestSector1Time, playerVehicle.mBestLapSector1);
-                TimeDisplayHelper(BestSector2Time, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
-                TimeDisplayHelper(BestSector3Time, playerVehicle.mBestLapTime - playerVehicle.mBestLapSector2);
-                TimeDisplayHelper(BestLapTime, playerVehicle.mBestLapTime);
+                TimeDisplayHelper(BestSector1Time, playerVehicleScoring.mBestLapSector1);
+                TimeDisplayHelper(BestSector2Time, playerVehicleScoring.mBestLapSector2 - playerVehicleScoring.mBestLapSector1);
+                TimeDisplayHelper(BestSector3Time, playerVehicleScoring.mBestLapTime - playerVehicleScoring.mBestLapSector2);
+                TimeDisplayHelper(BestLapTime, playerVehicleScoring.mBestLapTime);
             }
 
             if (showingLastLap)
             {
                 if (DateTime.Now < lastLapDisplayUntil)
                 {
-                    TimeDisplayHelper(CurrentLapTime, playerVehicle.mLastLapTime);
-                    TimeDisplayHelper(CurrentSector1Time, playerVehicle.mLastSector1);
-                    TimeDisplayHelper(CurrentSector2Time, playerVehicle.mLastSector2 - playerVehicle.mLastSector1);
-                    TimeDisplayHelper(CurrentSector3Time, playerVehicle.mLastLapTime - playerVehicle.mLastSector2);
-                    BetterSectorDisplay(CurrentSector3TimeStatus, playerVehicle.mLastLapTime - playerVehicle.mLastSector2, playerVehicle.mBestLapTime - playerVehicle.mBestLapSector2);
+                    TimeDisplayHelper(CurrentLapTime, playerVehicleScoring.mLastLapTime);
+                    TimeDisplayHelper(CurrentSector1Time, playerVehicleScoring.mLastSector1);
+                    TimeDisplayHelper(CurrentSector2Time, playerVehicleScoring.mLastSector2 - playerVehicleScoring.mLastSector1);
+                    TimeDisplayHelper(CurrentSector3Time, playerVehicleScoring.mLastLapTime - playerVehicleScoring.mLastSector2);
+                    BetterSectorDisplay(CurrentSector3TimeStatus, playerVehicleScoring.mLastLapTime - playerVehicleScoring.mLastSector2, playerVehicleScoring.mBestLapTime - playerVehicleScoring.mBestLapSector2);
                     return;
                 }
 
-                _telemetryData.updateData(vehicle, playerVehicle);
+                _telemetryData.updateData(playerVehicleTelemetry, playerVehicleScoring);
                 _telemetryData.exportDataToCSV();
                 CurrentSector1Time.Text = " ";
                 CurrentSector2Time.Text = " ";
@@ -167,27 +129,27 @@ namespace LmuOverlay
                 showingLastLap = false;
             }
 
-            double time = _scoring.mScoringInfo.mCurrentET - playerVehicle.mLapStartET;
+            double time = _importedData._scoring.mScoringInfo.mCurrentET - playerVehicleScoring.mLapStartET;
             TimeDisplayHelper(CurrentLapTime, time);
 
-            if (currentSector != playerVehicle.mSector)
+            if (currentSector != playerVehicleScoring.mSector)
             {
                 switch (currentSector)
                 {
                     case 1:
                         {
-                            TimeDisplayHelper(CurrentSector1Time, playerVehicle.mCurSector1);
-                            BetterSectorDisplay(CurrentSector1TimeStatus, playerVehicle.mCurSector1, playerVehicle.mBestLapSector1);
+                            TimeDisplayHelper(CurrentSector1Time, playerVehicleScoring.mCurSector1);
+                            BetterSectorDisplay(CurrentSector1TimeStatus, playerVehicleScoring.mCurSector1, playerVehicleScoring.mBestLapSector1);
                             break;
                         }
                     case 2:
                         {
-                            TimeDisplayHelper(CurrentSector2Time, playerVehicle.mCurSector2 - playerVehicle.mCurSector1);
-                            BetterSectorDisplay(CurrentSector2TimeStatus, playerVehicle.mCurSector2 - playerVehicle.mCurSector1, playerVehicle.mBestLapSector2 - playerVehicle.mBestLapSector1);
+                            TimeDisplayHelper(CurrentSector2Time, playerVehicleScoring.mCurSector2 - playerVehicleScoring.mCurSector1);
+                            BetterSectorDisplay(CurrentSector2TimeStatus, playerVehicleScoring.mCurSector2 - playerVehicleScoring.mCurSector1, playerVehicleScoring.mBestLapSector2 - playerVehicleScoring.mBestLapSector1);
                             break;
                         }
                 }
-                currentSector = playerVehicle.mSector;
+                currentSector = playerVehicleScoring.mSector;
             }
         }
 
@@ -206,9 +168,9 @@ namespace LmuOverlay
             textBlock.Text = $"{minutes}:{seconds:00.000}";
         }
 
-        private void SteeringDisplay(rF2VehicleTelemetry vehicle)
+        private void SteeringDisplay()
         {
-            double steering = vehicle.mUnfilteredSteering;
+            double steering = playerVehicleTelemetry.mUnfilteredSteering;
 
             if (steering < 0)
             {
@@ -219,24 +181,32 @@ namespace LmuOverlay
             }
         }
 
-        private void ThrottleDisplay(rF2VehicleTelemetry vehicle)
+        private void ThrottleDisplay()
         {
-            double throttleInput = vehicle.mUnfilteredThrottle;
+            double throttleInput = playerVehicleTelemetry.mUnfilteredThrottle;
             ThrottleProgressBar.Value = throttleInput;
         }
-        private void BrakeDisplay(rF2VehicleTelemetry vehicle)
+        private void BrakeDisplay()
         {
-            double brakeInput = vehicle.mUnfilteredBrake;
+            double brakeInput = playerVehicleTelemetry.mUnfilteredBrake;
             BrakeProgressBar.Value = brakeInput;
         }
 
-        private void SpeedKmhDisplay(double speedKmh)
+        private void SpeedKmhDisplay()
         {
+            double speedMs = Math.Sqrt(
+                playerVehicleTelemetry.mLocalVel.x * playerVehicleTelemetry.mLocalVel.x +
+                playerVehicleTelemetry.mLocalVel.y * playerVehicleTelemetry.mLocalVel.y +
+                playerVehicleTelemetry.mLocalVel.z * playerVehicleTelemetry.mLocalVel.z
+            );
+            double speedKmh = speedMs * 3.6;
             SpeedText.Text = $"{speedKmh:F0} km/h";
         }
 
-        private void GearDisplay(int gear)
+        private void GearDisplay()
         {
+                       
+            int gear = playerVehicleTelemetry.mGear;
             switch (gear)
             {
                 case -1:
@@ -255,8 +225,9 @@ namespace LmuOverlay
         }
 
 
-        private void RpmDisplay(double rpm)
+        private void RpmDisplay()
         {
+            double rpm = playerVehicleTelemetry.mEngineRPM;
             RpmText.Text = $"RPM: {rpm:F0}";
             if (rpm < 6000)
             {
@@ -387,25 +358,11 @@ namespace LmuOverlay
             return Brushes.LimeGreen;
         }
 
-        private void FuelDisplay(rF2VehicleTelemetry vehicle)
+        private void FuelDisplay()
         {
-            FuelProgressBar.Maximum = vehicle.mFuelCapacity;
-            FuelProgressBar.Value = vehicle.mFuel;
-            FuelText.Text = Math.Round(vehicle.mFuel, 1).ToString() + "%";
-        }
-
-        private void GetPlayerID()
-        {
-            _scoringBuffer.GetMappedData(ref _scoring);
-            foreach (rF2VehicleScoring vehicleScoring in _scoring.mVehicles)
-            {
-                if (vehicleScoring.mIsPlayer == 1)
-                {
-                    playerID = vehicleScoring.mID;
-                    playerVehicle = vehicleScoring;
-                    break;
-                }
-            }
+            FuelProgressBar.Maximum = playerVehicleTelemetry.mFuelCapacity;
+            FuelProgressBar.Value = playerVehicleTelemetry.mFuel;
+            FuelText.Text = Math.Round(playerVehicleTelemetry.mFuel, 1).ToString() + "%";
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
