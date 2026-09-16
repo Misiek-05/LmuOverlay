@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LmuOverlay"
         mc:Ignorable="d"
-        Title="LeaderboardWindow" Height="600" Width="300"
+        Title="LeaderboardWindow" Height="600" Width="600"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -14,8 +14,35 @@
         MouseDown="Window_MouseDown">
     <Border  CornerRadius="16" Background="Black" Padding="15" BorderBrush="#00FF88" BorderThickness="2">
         <Grid>
-            <ListView Name="LeaderboardListView" Foreground="White" Background="Transparent" ItemsSource="{Binding Leaderboard}"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".05*"/>
+                <RowDefinition Height=".95*"/>
+            </Grid.RowDefinitions>
 
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".2*"/>
+                    <ColumnDefinition Width=".8*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Name="SessionTextBlock" Text="Practice" Foreground="White" FontSize="23" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="TimeTextBlock" Text="0:00:00" Foreground="White" FontSize="23" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+            </Grid>            
+            <ListView Grid.Row="1" Foreground="White" Background="Transparent" ItemsSource="{Binding Leaderboard}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="PLACE" Width="35" DisplayMemberBinding="{Binding place}"/>
+                            <GridViewColumn Header="DRIVER" Width="150" DisplayMemberBinding="{Binding driverName}"/>
+                            <GridViewColumn Header="S1" Width="60" DisplayMemberBinding="{Binding sector1}"/>
+                            <GridViewColumn Header="S2" Width="60" DisplayMemberBinding="{Binding sector2}"/>
+                            <GridViewColumn Header="S3" Width="60" DisplayMemberBinding="{Binding sector3}"/>
+                            <GridViewColumn Header="LAP" Width="60" DisplayMemberBinding="{Binding lastLapTime}"/>
+                            <GridViewColumn Header="GAP" Width="60" DisplayMemberBinding="{Binding gap}"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
     </Border>
 </Window>

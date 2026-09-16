@@ -66,6 +66,8 @@ namespace LmuOverlay
 
             _importedData._telemetryBuffer.Connect();
             _importedData._scoringBuffer.Connect();
+            
+            _importedData._scoringInfo = _importedData._scoring.mScoringInfo;
         }
     }
 }

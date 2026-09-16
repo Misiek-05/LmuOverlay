@@ -13,6 +13,7 @@ namespace LmuOverlay
         public MappedBuffer<rF2Scoring> _scoringBuffer { get; set; }
         public rF2Telemetry _telemetry = new rF2Telemetry();
         public rF2Scoring _scoring = new rF2Scoring();
+        public rF2ScoringInfo _scoringInfo {  get; set; }
 
         // player data
         public int playerID {  get; set; }
@@ -27,6 +28,8 @@ namespace LmuOverlay
         public void GetPlayerID()
         {
             _scoringBuffer.GetMappedData(ref _scoring);
+            _scoringInfo = _scoring.mScoringInfo;
+
             foreach (rF2VehicleScoring vehicleScoring in _scoring.mVehicles)
             {
                 if (vehicleScoring.mIsPlayer == 1)
