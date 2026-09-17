@@ -12,7 +12,7 @@
         Topmost="True"
         ShowInTaskbar="True"
         MouseDown="Window_MouseDown">
-    <Border  CornerRadius="16" Background="Black" Padding="15" BorderBrush="#00FF88" BorderThickness="2">
+    <Border  CornerRadius="16" Background="#80000000" Padding="15" BorderBrush="#00FF88" BorderThickness="2">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height=".05*"/>
@@ -32,7 +32,7 @@
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="PLACE" Width="35" DisplayMemberBinding="{Binding place}"/>
+                            <GridViewColumn Header="P" Width="30" DisplayMemberBinding="{Binding place}"/>
                             <GridViewColumn Header="DRIVER" Width="150" DisplayMemberBinding="{Binding driverName}"/>
                             <GridViewColumn Header="S1" Width="60" DisplayMemberBinding="{Binding sector1}"/>
                             <GridViewColumn Header="S2" Width="60" DisplayMemberBinding="{Binding sector2}"/>

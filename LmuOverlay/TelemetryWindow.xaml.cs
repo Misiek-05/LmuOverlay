@@ -46,19 +46,19 @@ namespace LmuOverlay
             {
                 _importedData._telemetryBuffer.GetMappedData(ref _importedData._telemetry);
                 _importedData.GetPlayerID();
-                playerVehicleScoring = _importedData.playerVehicleScoring;
+                playerVehicleScoring = _importedData.player.playerVehicleScoring;
 
                 for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
                 {
                     playerVehicleTelemetry = _importedData._telemetry.mVehicles[i];
-                    _importedData.playerVehicleTelemetry = playerVehicleTelemetry;
+                    _importedData.player.playerVehicleTelemetry = playerVehicleTelemetry;
 
                     if (!isTelemetryDataCreated) {
                         _telemetryData = new TelemetryData(playerVehicleTelemetry.mTrackName);
                         isTelemetryDataCreated = true;
                     }
 
-                    if (playerVehicleTelemetry.mID == _importedData.playerID)
+                    if (playerVehicleTelemetry.mID == _importedData.player.playerID)
                     {
 
                         SpeedKmhDisplay();

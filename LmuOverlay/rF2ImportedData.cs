@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace LmuOverlay
 {
+    public enum Session
+    {
+        Practice = 0,
+        Qualify = 1,
+        Warmup = 2,
+        Race = 3
+    };
+
     public class rF2ImportedData
     {
         public MappedBuffer<rF2Telemetry> _telemetryBuffer {  get; set; }
@@ -14,15 +22,15 @@ namespace LmuOverlay
         public rF2Telemetry _telemetry = new rF2Telemetry();
         public rF2Scoring _scoring = new rF2Scoring();
         public rF2ScoringInfo _scoringInfo {  get; set; }
+        public Session currentSession { get; set; }
 
         // player data
-        public int playerID {  get; set; }
-        public rF2VehicleScoring playerVehicleScoring { get; set; }
-        public rF2VehicleTelemetry playerVehicleTelemetry { get; set; }
-        public byte[] mVehicleClass { get; set; }
+        public Player player;
+        
 
         public rF2ImportedData() {
-            playerID = 0;
+            player = new Player();
+            player.playerID = 0;
         }
 
         public void GetPlayerID()
@@ -34,12 +42,29 @@ namespace LmuOverlay
             {
                 if (vehicleScoring.mIsPlayer == 1)
                 {
-                    playerID = vehicleScoring.mID;
-                    playerVehicleScoring = vehicleScoring;
-                    mVehicleClass = vehicleScoring.mVehicleClass;
+                    player.playerID = vehicleScoring.mID;
+                    player.playerVehicleScoring = vehicleScoring;
+                    player.mVehicleClass = vehicleScoring.mVehicleClass;
+                    currentSession = GetSession();
                     break;
                 }
             }
         }
+
+        public Session GetSession()
+        {
+            int session = _scoringInfo.mSession;
+            if (session <= 4)
+                return Session.Practice;
+            if (session <= 8)
+                return Session.Qualify;
+            if (session == 9)
+                return Session.Warmup;
+            return Session.Race;    
+        }
+
+
+
+
     }
 }

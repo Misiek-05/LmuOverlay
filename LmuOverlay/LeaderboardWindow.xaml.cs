@@ -54,27 +54,49 @@ namespace LmuOverlay
             _importedData.GetPlayerID();
 
             SessionAndTimeDisplay();
-            var items = new List<LeaderboardItem>();
+            var drivers = new List<LeaderboardItem>();
 
             foreach (rF2VehicleScoring vehicleScoring in _importedData._scoring.mVehicles)
             {
-                if (Encoding.ASCII.GetString(vehicleScoring.mVehicleClass).TrimEnd('\0') == Encoding.ASCII.GetString(_importedData.mVehicleClass).TrimEnd('\0'))
+                if (Encoding.ASCII.GetString(vehicleScoring.mVehicleClass).TrimEnd('\0') == Encoding.ASCII.GetString(_importedData.player.mVehicleClass).TrimEnd('\0'))
                 {
-                    items.Add(new LeaderboardItem(
-                        vehicleScoring.mPlace,
-                        Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0'),
-                        ConvertTimeToString(vehicleScoring.mLastSector1),
-                        ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
-                        ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
-                        ConvertTimeToString(vehicleScoring.mLastLapTime),
-                        ConvertTimeToString(vehicleScoring.mTimeBehindNext)
-                    ));
+                    if (_importedData.currentSession == Session.Practice || _importedData.currentSession == Session.Qualify)
+                    {
+                        drivers.Add(new LeaderboardItem(
+                            vehicleScoring.mPlace,
+                            ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0')),
+                            ConvertTimeToString(vehicleScoring.mBestSector1),
+                            ConvertTimeToString(vehicleScoring.mBestSector2 - vehicleScoring.mBestSector1),
+                            ConvertTimeToString(vehicleScoring.mBestLapTime - vehicleScoring.mBestSector2),
+                            ConvertTimeToString(vehicleScoring.mBestLapTime),
+                            "     -     "
+                        ));
+                    }
+
+                    if (_importedData.currentSession == Session.Warmup || _importedData.currentSession == Session.Race)
+                    {
+                        drivers.Add(new LeaderboardItem(
+                            vehicleScoring.mPlace,
+                            ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0')),
+                            ConvertTimeToString(vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime),
+                            ConvertTimeToString(vehicleScoring.mTimeBehindNext)
+                        ));
+                    }
+
+
+                    if (vehicleScoring.mIsPlayer == 1)
+                    {
+                        _importedData.player.place = vehicleScoring.mPlace;
+                    }
                 }
             }
 
-            items.OrderBy(i => i.place);
-            for (int i = 0; i < items.Count; i++) {
-                var item = items[i];
+            var sortedDrivers = drivers.OrderBy(i => i.place).ToList();
+            for (int i = 0; i < drivers.Count; i++) {
+                var item = sortedDrivers[i];
                 item.place = i + 1;
                 leaderboard.Add(item);
             }
@@ -82,33 +104,36 @@ namespace LmuOverlay
 
         private void SessionAndTimeDisplay()
         {
-            int session = _importedData._scoringInfo.mSession;
             double currentTime = _importedData._scoringInfo.mCurrentET;
             double endTime = _importedData._scoringInfo.mEndET;
 
-            if (session <= 4)
+            switch (_importedData.currentSession)
             {
-                SessionTextBlock.Text = "Practice";
-                TimeDisplayHelper(TimeTextBlock, endTime - currentTime);
+                case Session.Practice:
+                    {
+                        SessionTextBlock.Text = "Practice";
+                        TimeDisplayHelper(TimeTextBlock, endTime - currentTime);
+                        break;
+                    }
+                case Session.Qualify:
+                    {
+                        SessionTextBlock.Text = "Qualify";
+                        TimeDisplayHelper(TimeTextBlock, endTime - currentTime);
+                        break;
+                    }
+                case Session.Warmup:
+                    {
+                        SessionTextBlock.Text = "Warmup";
+                        TimeDisplayHelper(TimeTextBlock, 0);
+                        break;
+                    }
+                case Session.Race:
+                    {
+                        SessionTextBlock.Text = "Race";
+                        TimeDisplayHelper(TimeTextBlock, endTime - currentTime);
+                        break;
+                    }
             }
-            else
-            if (session <= 8)
-            {
-                SessionTextBlock.Text = "Qualify";
-                TimeDisplayHelper(TimeTextBlock, endTime - currentTime);
-            }
-            else
-            if (session == 9)
-            {
-                SessionTextBlock.Text = "Warmup";
-                TimeDisplayHelper(TimeTextBlock, 0);
-            }
-            else
-            {
-                SessionTextBlock.Text = "Race";
-                TimeDisplayHelper(TimeTextBlock, endTime - currentTime);
-            }
-
 
         }
         private void TimeDisplayHelper(TextBlock textBlock, double time)
@@ -127,6 +152,22 @@ namespace LmuOverlay
             if (time == 0)
                 return "      -   ";
             return $"{(int)(time / 60)}:{(time % 60):00.000}";
+        }
+
+        private string ConvertName(string name)
+        {
+            var splits = name.Split(' ');
+            string nameShorter = splits[0][0].ToString() + " ";
+            if (splits.Length > 2)
+            {
+                nameShorter += splits[1][0] + " ";
+                nameShorter += splits[2];
+            }
+            else
+            {
+                nameShorter += splits[1];
+            }
+            return nameShorter;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
