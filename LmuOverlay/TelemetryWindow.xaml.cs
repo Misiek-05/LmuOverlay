@@ -22,6 +22,9 @@ namespace LmuOverlay
         private DateTime lastLapDisplayUntil;
         private bool isTelemetryDataCreated = false;
 
+        // fuelRatio is not in shared memory - basic value is 0.9
+        private double fuelRatio = 0.9;
+
         private DispatcherTimer _timer;
         public TelemetryWindow(rF2ImportedData _importedData)
         {
@@ -72,6 +75,7 @@ namespace LmuOverlay
 
                         CurrentLapDisplay();
                         FuelDisplay();
+                        NRGDisplay();
                         ThrottleDisplay();
                         BrakeDisplay();
                         SteeringDisplay();
@@ -85,6 +89,13 @@ namespace LmuOverlay
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void NRGDisplay()
+        {
+            NRGProgressBar.Maximum = playerVehicleTelemetry.mFuelCapacity; 
+            NRGProgressBar.Value = playerVehicleTelemetry.mFuel * 100 * fuelRatio;
+            NRGText.Text = $"{Math.Round(playerVehicleTelemetry.mFuel * 100 * fuelRatio, 1)}%";
         }
 
         private void CurrentLapDisplay()
@@ -363,7 +374,7 @@ namespace LmuOverlay
         {
             FuelProgressBar.Maximum = playerVehicleTelemetry.mFuelCapacity;
             FuelProgressBar.Value = playerVehicleTelemetry.mFuel;
-            FuelText.Text = Math.Round(playerVehicleTelemetry.mFuel, 1).ToString() + "%";
+            FuelText.Text = Math.Round(playerVehicleTelemetry.mFuel, 1).ToString() + "L";
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

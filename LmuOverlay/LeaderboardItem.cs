@@ -15,9 +15,11 @@ namespace LmuOverlay
         public string sector2 { get; set; }
         public string sector3 { get; set; }
         public string lastLapTime { get; set; }
+        public string bestLapTime { get; set; }
         public string gap { get; set; }
+        public double fuel { get; set; }
 
-        public LeaderboardItem(int place, string driverName, string sector1, string sector2, string sector3, string lastLapTime, string gap)
+        public LeaderboardItem(int place, string driverName, string sector1, string sector2, string sector3, string lastLapTime, string bestLapTime, string gap)
         {
             this.place = place;
             this.driverName = driverName;
@@ -25,6 +27,7 @@ namespace LmuOverlay
             this.sector2 = sector2;
             this.sector3 = sector3;
             this.lastLapTime = lastLapTime;
+            this.bestLapTime = bestLapTime;
             this.gap = gap;
         }
     }

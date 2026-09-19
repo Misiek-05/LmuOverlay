@@ -60,14 +60,22 @@ namespace LmuOverlay
             {
                 if (Encoding.ASCII.GetString(vehicleScoring.mVehicleClass).TrimEnd('\0') == Encoding.ASCII.GetString(_importedData.player.mVehicleClass).TrimEnd('\0'))
                 {
+                    rF2VehicleTelemetry vehicle;
+
+                    for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
+                        if (vehicleScoring.mID == _importedData._telemetry.mVehicles[i].mID)
+                            vehicle = _importedData._telemetry.mVehicles[i];
+
+
                     if (_importedData.currentSession == Session.Practice || _importedData.currentSession == Session.Qualify)
                     {
                         drivers.Add(new LeaderboardItem(
                             vehicleScoring.mPlace,
                             ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0')),
-                            ConvertTimeToString(vehicleScoring.mBestSector1),
-                            ConvertTimeToString(vehicleScoring.mBestSector2 - vehicleScoring.mBestSector1),
-                            ConvertTimeToString(vehicleScoring.mBestLapTime - vehicleScoring.mBestSector2),
+                            ConvertTimeToString(vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime),
                             ConvertTimeToString(vehicleScoring.mBestLapTime),
                             "     -     "
                         ));
@@ -82,6 +90,7 @@ namespace LmuOverlay
                             ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
                             ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
                             ConvertTimeToString(vehicleScoring.mLastLapTime),
+                            ConvertTimeToString(vehicleScoring.mBestLapTime),
                             ConvertTimeToString(vehicleScoring.mTimeBehindNext)
                         ));
                     }
@@ -149,9 +158,13 @@ namespace LmuOverlay
 
         private string ConvertTimeToString(double time)
         {
+            string returnString = $"{(int)(time / 60)}:{(time % 60):00.000}";
             if (time == 0)
-                return "      -   ";
-            return $"{(int)(time / 60)}:{(time % 60):00.000}";
+                return "     -     ";
+
+            if (returnString.Contains("-"))
+                return "     -     ";
+            return returnString;
         }
 
         private string ConvertName(string name)
