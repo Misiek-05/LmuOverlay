@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +25,7 @@ namespace LmuOverlay
     {
         private rF2ImportedData _importedData;
         private DispatcherTimer _timer;
+        private List<LeaderboardItem> drivers = new List<LeaderboardItem>();
         public LeaderboardWindow(rF2ImportedData _importedData)
         {
             DataContext = this;
@@ -31,6 +33,20 @@ namespace LmuOverlay
 
             InitializeComponent();
             this._importedData = _importedData;
+
+            _importedData.GetPlayerID();
+            foreach (rF2VehicleScoring vehicleScoring in _importedData._scoring.mVehicles)
+            {
+                if (Encoding.ASCII.GetString(vehicleScoring.mVehicleClass).TrimEnd('\0') == Encoding.ASCII.GetString(_importedData.player.mVehicleClass).TrimEnd('\0'))
+                {
+                    drivers.Add(new LeaderboardItem(
+                        vehicleScoring.mIsPlayer,
+                        vehicleScoring.mID,
+                        vehicleScoring.mPlace,
+                        ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0'))
+                    ));
+                }
+            }
 
             _timer = new DispatcherTimer
             {
@@ -50,65 +66,176 @@ namespace LmuOverlay
 
         private void UpdateLeaderboard(object? sender, EventArgs e)
         {
+            
             leaderboard.Clear();
             _importedData.GetPlayerID();
 
             SessionAndTimeDisplay();
-            var drivers = new List<LeaderboardItem>();
+            foreach (var driver in drivers)
+                driver.updated = 0;
 
             foreach (rF2VehicleScoring vehicleScoring in _importedData._scoring.mVehicles)
             {
                 if (Encoding.ASCII.GetString(vehicleScoring.mVehicleClass).TrimEnd('\0') == Encoding.ASCII.GetString(_importedData.player.mVehicleClass).TrimEnd('\0'))
                 {
-                    rF2VehicleTelemetry vehicle;
-
-                    for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
-                        if (vehicleScoring.mID == _importedData._telemetry.mVehicles[i].mID)
-                            vehicle = _importedData._telemetry.mVehicles[i];
-
-
-                    if (_importedData.currentSession == Session.Practice || _importedData.currentSession == Session.Qualify)
+                    if (WasDriverOnGrid(vehicleScoring))
+                    {
+                        UpdateDriverScoring(vehicleScoring);
+                    }
+                    else
                     {
                         drivers.Add(new LeaderboardItem(
+                            vehicleScoring.mIsPlayer,
+                            vehicleScoring.mID,
                             vehicleScoring.mPlace,
-                            ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0')),
-                            ConvertTimeToString(vehicleScoring.mLastSector1),
-                            ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
-                            ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
-                            ConvertTimeToString(vehicleScoring.mLastLapTime),
-                            ConvertTimeToString(vehicleScoring.mBestLapTime),
-                            "     -     "
+                            ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0'))
                         ));
-                    }
-
-                    if (_importedData.currentSession == Session.Warmup || _importedData.currentSession == Session.Race)
-                    {
-                        drivers.Add(new LeaderboardItem(
-                            vehicleScoring.mPlace,
-                            ConvertName(Encoding.UTF8.GetString(vehicleScoring.mDriverName).TrimEnd('\0')),
-                            ConvertTimeToString(vehicleScoring.mLastSector1),
-                            ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
-                            ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
-                            ConvertTimeToString(vehicleScoring.mLastLapTime),
-                            ConvertTimeToString(vehicleScoring.mBestLapTime),
-                            ConvertTimeToString(vehicleScoring.mTimeBehindNext)
-                        ));
-                    }
-
-
-                    if (vehicleScoring.mIsPlayer == 1)
-                    {
-                        _importedData.player.place = vehicleScoring.mPlace;
+                        drivers.ElementAt(drivers.Count - 1).updated = 1;
                     }
                 }
             }
 
+            if (_importedData.currentSession == Session.Practice || _importedData.currentSession == Session.Qualify)
+                UpdateGap();
+            if (_importedData.currentSession == Session.Race)
+                UpdateRaceGap();
+
+            driversOnLeaderboard(drivers);
+
+        }
+
+        private void UpdateGap()
+        {
             var sortedDrivers = drivers.OrderBy(i => i.place).ToList();
-            for (int i = 0; i < drivers.Count; i++) {
-                var item = sortedDrivers[i];
-                item.place = i + 1;
-                leaderboard.Add(item);
+            double leaderTime = sortedDrivers[0].bestLapTimeDouble;
+
+            for (int i = 1; i < sortedDrivers.Count; i++)
+            {
+                double gap = sortedDrivers[i].bestLapTimeDouble - leaderTime;
+                sortedDrivers[i].gap = ConvertGapTimeToString(gap);
             }
+        }
+
+        private void UpdateRaceGap()
+        {
+            var sortedDrivers = drivers.OrderBy(i => i.place).ToList();
+            int driverIndex = 0;
+
+            for (int i = 0; i < sortedDrivers.Count; i++) 
+            { 
+                if (sortedDrivers[i].mID == 1)
+                {
+                    driverIndex = i; 
+                    break;
+                } 
+            }
+
+            double totalGapBehind = 0;
+            for (int i = driverIndex + 1; i < sortedDrivers.Count; i++)
+            {
+                totalGapBehind += sortedDrivers[i].gapDouble;
+                sortedDrivers[i].gap = ConvertGapBehindTimeToString(totalGapBehind);
+            }
+
+            double totalGapInFront = 0;
+            for (int i = driverIndex - 1; i >= 0; i--) 
+            { 
+                totalGapInFront += sortedDrivers[i].gapDouble;
+                sortedDrivers[i].gap = ConvertGapInFrontTimeToString(totalGapInFront);
+            }
+
+        }
+
+        private bool WasDriverOnGrid(rF2VehicleScoring vehicleScoring)
+        {
+            foreach (var driver in drivers) 
+            {
+                if (driver.mID == vehicleScoring.mID)
+                    return true;
+            }
+            return false;
+        }
+
+        private void UpdateDriverScoring(rF2VehicleScoring vehicleScoring)
+        {
+            foreach (var driver in drivers) {
+                if (driver.mID == vehicleScoring.mID)
+                {
+                    if (_importedData.currentSession == Session.Race) { 
+                        driver.Update(
+                            vehicleScoring.mPlace,
+                            ConvertTimeToString(vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime),
+                            ConvertTimeToString(vehicleScoring.mBestLapTime),
+                            vehicleScoring.mBestLapTime,
+                            ConvertTimeToString(vehicleScoring.mTimeBehindNext),
+                            vehicleScoring.mTimeBehindNext
+                        );
+                        driver.updated = 1;
+                    } 
+
+                    if (_importedData.currentSession == Session.Qualify || _importedData.currentSession == Session.Practice)
+                    {
+                        driver.Update(
+                            vehicleScoring.mPlace,
+                            ConvertTimeToString(vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastSector2 - vehicleScoring.mLastSector1),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime - vehicleScoring.mLastSector2),
+                            ConvertTimeToString(vehicleScoring.mLastLapTime),
+                            ConvertTimeToString(vehicleScoring.mBestLapTime),
+                            vehicleScoring.mBestLapTime,
+                            "-",
+                            vehicleScoring.mTimeBehindNext
+                        );
+                        driver.updated = 1;
+                    }
+                }
+            }
+        }
+
+        private void driversOnLeaderboard(List<LeaderboardItem> drivers)
+        {
+            var sortedDrivers = drivers.OrderBy(i => i.place).ToList();
+            for (int i = 0; i < drivers.Count; i++)
+            {
+                sortedDrivers[i].place = i + 1;
+                if (sortedDrivers[i].isPlayer == 1)
+                    _importedData.player.place = i + 1;
+            }
+
+            // Current leader of the race / fastest driver in qualify 
+            leaderboard.Add(sortedDrivers[0]);
+
+            if (sortedDrivers.Count <= 16) // leader + 7 in front + player + 7 behind
+            {
+                for (int i = 1; i < drivers.Count; i++)
+                    leaderboard.Add(sortedDrivers[i]);
+            }
+            else
+            {
+                int placeInFront = _importedData.player.place - 7; // 7 drivers in front of player 
+                int placeBehind = _importedData.player.place + 7; // 7 drivers behind player
+
+                if (placeInFront < 1)
+                {
+                    placeBehind -= placeInFront;
+                    placeBehind++;
+                    placeInFront = 1;
+                }
+
+                if (placeBehind > sortedDrivers.Count)
+                {
+                    int over = placeBehind - sortedDrivers.Count;
+                    placeInFront -= over;
+                    placeBehind = sortedDrivers.Count;
+                }
+
+                for (int i = placeInFront; i < placeBehind; i++)
+                    leaderboard.Add(sortedDrivers[i]);
+            }
+
         }
 
         private void SessionAndTimeDisplay()
@@ -145,6 +272,7 @@ namespace LmuOverlay
             }
 
         }
+
         private void TimeDisplayHelper(TextBlock textBlock, double time)
         {
             int totalMinutes = (int)(time / 60);
@@ -154,6 +282,32 @@ namespace LmuOverlay
             double seconds = time % 60;
 
             textBlock.Text = $"{hours}:{minutes:00}:{seconds:00}";
+        }
+       
+        private string ConvertGapTimeToString(double time)
+        {
+            double seconds = time % 60;
+            string returnString = $"+{seconds:00.000}";
+            if (returnString.Contains("-"))
+                return "-";
+            return returnString;
+        }
+
+        private string ConvertGapBehindTimeToString(double time)
+        {
+            double seconds = time % 60;
+            string returnString = $"+{seconds:00.000}";
+            if (returnString.Contains("-"))
+                return "-";
+            return returnString;
+        }
+        private string ConvertGapInFrontTimeToString(double time)
+        {
+            double seconds = time % 60;
+            string returnString = $"-{seconds:00.000}";
+            if (returnString.Contains("+"))
+                return "-";
+            return returnString;
         }
 
         private string ConvertTimeToString(double time)

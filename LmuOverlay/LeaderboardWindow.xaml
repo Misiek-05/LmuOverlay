@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LmuOverlay"
         mc:Ignorable="d"
-        Title="LeaderboardWindow" Height="600" Width="600"
+        Title="LeaderboardWindow" Height="400" Width="600"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -25,24 +25,22 @@
                     <ColumnDefinition Width=".8*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="SessionTextBlock" Text="Practice" Foreground="White" FontSize="23" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBlock Name="TimeTextBlock" Text="0:00:00" Foreground="White" FontSize="23" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+                <TextBlock Name="SessionTextBlock" Text="Practice" Foreground="White" FontSize="21" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="TimeTextBlock" Text="0:00:00" Foreground="White" FontSize="21" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
             </Grid>
             <ListView Grid.Row="1" Foreground="White" Background="Transparent" ItemsSource="{Binding Leaderboard}"
-                      BorderThickness="0" AlternationCount="2">
+                      BorderThickness="0" AlternationCount="2" Margin="0, 5, 0, 0">
                 <ListView.Resources>
-                    <!-- Kolory nagłówków kolumn (P, DRIVER, S1...) -->
                     <Style TargetType="GridViewColumnHeader">
                         <Setter Property="Background" Value="#33FFFFFF"/>
                         <Setter Property="Foreground" Value="#00FF88"/>
                         <Setter Property="BorderBrush" Value="#00FF88"/>
-                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
                         <Setter Property="Padding" Value="4,4,4,4"/>
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
 
-                    <!-- Kolory wierszy: tło, zaznaczenie, hover -->
                     <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Foreground" Value="White"/>
                         <Setter Property="BorderThickness" Value="0"/>
