@@ -33,8 +33,7 @@
                 <ListView.Resources>
                     <Style TargetType="GridViewColumnHeader">
                         <Setter Property="Background" Value="#33FFFFFF"/>
-                        <Setter Property="Foreground" Value="#00FF88"/>
-                        <Setter Property="BorderBrush" Value="#00FF88"/>
+                        <Setter Property="Foreground" Value="#FFFFFF"/>
                         <Setter Property="Padding" Value="4,4,4,4"/>
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
@@ -43,7 +42,7 @@
                         <Setter Property="HorizontalAlignment" Value="Center"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="BorderThickness" Value="1"/>
                         <Setter Property="Padding" Value="2"/>
                         <Setter Property="HorizontalAlignment" Value="Center"/>
                         <Style.Triggers>
@@ -56,6 +55,7 @@
                         </Style.Triggers>
                     </Style>
                 </ListView.Resources>
+                
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
@@ -65,12 +65,19 @@
                             <GridViewColumn Header="S2" Width="60" DisplayMemberBinding="{Binding sector2}"/>
                             <GridViewColumn Header="S3" Width="60" DisplayMemberBinding="{Binding sector3}"/>
                             <GridViewColumn Header="LAP" Width="60" DisplayMemberBinding="{Binding lastLapTime}"/>
-                            <GridViewColumn Header="BEST LAP" Width="60" DisplayMemberBinding="{Binding bestLapTime}"/>
+                            <GridViewColumn Header="BEST LAP" Width="60">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding bestLapTime}" Foreground="Purple"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="GAP" Width="60" DisplayMemberBinding="{Binding gap}"/>
-                            <GridViewColumn Header="NRG" Width="40" DisplayMemberBinding="{Binding fuel}"/>
+                            <GridViewColumn Header="" Width="40" DisplayMemberBinding="{Binding status}"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
+                
             </ListView>
         </Grid>
     </Border>

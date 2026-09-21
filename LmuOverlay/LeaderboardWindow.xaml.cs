@@ -123,9 +123,10 @@ namespace LmuOverlay
 
             for (int i = 0; i < sortedDrivers.Count; i++) 
             { 
-                if (sortedDrivers[i].mID == 1)
+                if (sortedDrivers[i].isPlayer == 1)
                 {
-                    driverIndex = i; 
+                    driverIndex = i;
+                    sortedDrivers[i].gap = "-";
                     break;
                 } 
             }
@@ -171,7 +172,8 @@ namespace LmuOverlay
                             ConvertTimeToString(vehicleScoring.mBestLapTime),
                             vehicleScoring.mBestLapTime,
                             ConvertTimeToString(vehicleScoring.mTimeBehindNext),
-                            vehicleScoring.mTimeBehindNext
+                            vehicleScoring.mTimeBehindNext,
+                            driverStatus(vehicleScoring)
                         );
                         driver.updated = 1;
                     } 
@@ -187,12 +189,31 @@ namespace LmuOverlay
                             ConvertTimeToString(vehicleScoring.mBestLapTime),
                             vehicleScoring.mBestLapTime,
                             "-",
-                            vehicleScoring.mTimeBehindNext
+                            vehicleScoring.mTimeBehindNext,
+                            driverStatus(vehicleScoring)
                         );
                         driver.updated = 1;
                     }
                 }
             }
+        }
+
+        private string driverStatus(rF2VehicleScoring vehicleScoring)
+        {
+            switch (vehicleScoring.mFinishStatus)
+            {
+                case 1:
+                    return "FIN";
+                case 2:
+                    return "DNF";
+                case 3:
+                    return "DSQ";
+            }
+
+            if (vehicleScoring.mInPits == 1)
+                return "PIT";
+
+            return " ";
         }
 
         private void driversOnLeaderboard(List<LeaderboardItem> drivers)
@@ -297,16 +318,12 @@ namespace LmuOverlay
         {
             double seconds = time % 60;
             string returnString = $"+{seconds:00.000}";
-            if (returnString.Contains("-"))
-                return "-";
             return returnString;
         }
         private string ConvertGapInFrontTimeToString(double time)
         {
             double seconds = time % 60;
             string returnString = $"-{seconds:00.000}";
-            if (returnString.Contains("+"))
-                return "-";
             return returnString;
         }
 

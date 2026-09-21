@@ -21,10 +21,10 @@ namespace LmuOverlay
         public double bestLapTimeDouble { get; set; }
         public string gap { get; set; }
         public double gapDouble { get; set; }
-        public double fuel { get; set; }
+        public string status { get; set; }
         public double updated { get; set; }
 
-        public LeaderboardItem(byte isPlayer, int mID, int place, string driverName, string sector1 = "-", string sector2 = "-", string sector3 = "-", string lastLapTime = "-", string bestLapTime = "-", double bestLapTimeDouble = 0.0, string gap = "-", double gapDouble = 0)
+        public LeaderboardItem(byte isPlayer, int mID, int place, string driverName, string sector1 = "-", string sector2 = "-", string sector3 = "-", string lastLapTime = "-", string bestLapTime = "-", double bestLapTimeDouble = 0.0, string gap = "-", double gapDouble = 0, string status = " ")
         {
             this.isPlayer = isPlayer;
             this.mID = mID;
@@ -40,7 +40,7 @@ namespace LmuOverlay
             this.gapDouble = gapDouble;
         }
 
-        public void Update(int place, string sector1, string sector2, string sector3, string lastLapTime, string bestLapTime, double bestLapTimeDouble, string gap, double gapDouble)
+        public void Update(int place, string sector1, string sector2, string sector3, string lastLapTime, string bestLapTime, double bestLapTimeDouble, string gap, double gapDouble, string status)
         {
             this.place = place;
             this.sector1 = sector1;
@@ -51,6 +51,7 @@ namespace LmuOverlay
             this.bestLapTimeDouble = bestLapTimeDouble;
             this.gap = gap;
             this.gapDouble= gapDouble;
+            this.status = status;
         }
     }
 }
