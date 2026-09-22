@@ -1,5 +1,6 @@
 ﻿using LmuOverlay.rFactor2Data;
 using System;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,10 +12,11 @@ namespace LmuOverlay
 {
     public partial class TelemetryWindow : Window
     {
-        private rF2ImportedData _importedData;
+        private readonly rF2ImportedData _importedData;
         private TelemetryData _telemetryData;
         private rF2VehicleScoring playerVehicleScoring;
         private rF2VehicleTelemetry playerVehicleTelemetry;
+        private XMLoperator _XMLoperator;
 
         private short currentLap;
         private int currentSector;
@@ -26,13 +28,14 @@ namespace LmuOverlay
         private double fuelRatio = 0.9;
 
         private DispatcherTimer _timer;
-        public TelemetryWindow(rF2ImportedData _importedData)
+        public TelemetryWindow(rF2ImportedData _importedData, XMLoperator _XMLoperator)
         {
             InitializeComponent();
             this._importedData = _importedData;
 
             currentLap = 0;
             currentSector = 2;
+            this._XMLoperator = _XMLoperator;
 
             _timer = new DispatcherTimer
             {
@@ -63,7 +66,6 @@ namespace LmuOverlay
 
                     if (playerVehicleTelemetry.mID == _importedData.player.playerID)
                     {
-
                         SpeedKmhDisplay();
                         GearDisplay();
                         RpmDisplay();
@@ -109,6 +111,15 @@ namespace LmuOverlay
                 lastLapDisplayUntil = DateTime.Now.AddSeconds(2);
                 showingLastLap = true;
                 currentLap = playerVehicleScoring.mTotalLaps;
+
+                _XMLoperator.Add(new Lap(
+                        Encoding.ASCII.GetString(playerVehicleTelemetry.mTrackName).Trim('\0'),
+                        Encoding.ASCII.GetString(playerVehicleScoring.mDriverName).Trim('\0'),
+                        ConvertTimeToString(playerVehicleScoring.mLastSector1),
+                        ConvertTimeToString(playerVehicleScoring.mLastSector2 - playerVehicleScoring.mLastSector1),
+                        ConvertTimeToString(playerVehicleScoring.mLastLapTime - playerVehicleScoring.mLastSector2),
+                        ConvertTimeToString(playerVehicleScoring.mLastLapTime)
+                    ));
 
                 TimeDisplayHelper(BestSector1Time, playerVehicleScoring.mBestLapSector1);
                 TimeDisplayHelper(BestSector2Time, playerVehicleScoring.mBestLapSector2 - playerVehicleScoring.mBestLapSector1);
@@ -178,6 +189,13 @@ namespace LmuOverlay
             int minutes = (int)(time / 60);
             double seconds = time % 60;
             textBlock.Text = $"{minutes}:{seconds:00.000}";
+        }
+
+        private string ConvertTimeToString(double time)
+        {
+            int minutes = (int)(time / 60);
+            double seconds = time % 60;
+            return $"{minutes}:{seconds:00.000}";
         }
 
         private void SteeringDisplay()
@@ -381,6 +399,11 @@ namespace LmuOverlay
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
+        }
+
+        private void Window_Closed(object? sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

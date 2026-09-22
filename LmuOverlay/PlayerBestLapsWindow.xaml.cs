@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace LmuOverlay
 {
@@ -19,10 +20,28 @@ namespace LmuOverlay
     /// </summary>
     public partial class PlayerBestLapsWindow : Window
     {
+        private DispatcherTimer _timer;
+
         public PlayerBestLapsWindow(rF2ImportedData _importedData)
         {
             InitializeComponent();
+
+            _timer = new DispatcherTimer();
+
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+
+            _timer.Tick += UpdateBestLaps;
+            _timer.Start();
         }
+
+        private void UpdateBestLaps(object? sender, EventArgs e)
+        {
+
+        }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)

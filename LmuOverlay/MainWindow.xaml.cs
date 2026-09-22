@@ -7,6 +7,7 @@ namespace LmuOverlay
     {
         private rF2ImportedData _importedData = new rF2ImportedData();
         private bool connected = false;
+        private XMLoperator _XMLoperator = new XMLoperator();
 
         public MainWindow()
         {
@@ -15,7 +16,7 @@ namespace LmuOverlay
 
         private void TelemetryWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            Window telemetryWindow = new TelemetryWindow(_importedData);
+            Window telemetryWindow = new TelemetryWindow(_importedData, _XMLoperator);
             telemetryWindow.Show();
         }
 
@@ -42,6 +43,7 @@ namespace LmuOverlay
                 PlayerBestLapsWindowButton.Visibility = Visibility.Visible;
                 LeaderboardWindowButton.Visibility = Visibility.Visible;
                 TelemetryWindowButton.Visibility = Visibility.Visible;
+                ExportToXMLBUtton.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
@@ -75,5 +77,9 @@ namespace LmuOverlay
             _importedData._scoringInfo = _importedData._scoring.mScoringInfo;
         }
 
+        private void ExportToXMLBUtton_Click(object sender, RoutedEventArgs e)
+        {
+            _XMLoperator.ExportToXML();
+        }
     }
 }
