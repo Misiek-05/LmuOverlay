@@ -35,7 +35,7 @@ namespace LmuOverlay
                 || lap.sector2.Contains("-")
                 || lap.sector3.Contains("-")
                 || lap.lapTime.Contains("-")
-                || lap.lapTime == "0:00.000");
+                || lap.lapTime == "0:00,000");
         }
 
         public void ExportToXML()

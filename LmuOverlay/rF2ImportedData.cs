@@ -68,5 +68,19 @@ namespace LmuOverlay
             return $"{Encoding.ASCII.GetString(_telemetry.mVehicles[0].mTrackName).Trim('\0')}";
         }
 
+        public void GetPlayerTelemetry()
+        {
+            _telemetryBuffer.GetMappedData(ref _telemetry);
+            
+            for (int i = 0; i < _telemetry.mNumVehicles; i++)
+            {
+                rF2VehicleTelemetry tmp = _telemetry.mVehicles[i];
+                if (tmp.mID == player.playerID)
+                {
+                    player.playerVehicleTelemetry = tmp;
+                    return;
+                }
+            }
+        }
     }
 }

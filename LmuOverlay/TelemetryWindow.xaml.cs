@@ -50,19 +50,11 @@ namespace LmuOverlay
         {
             try
             {
-                _importedData._telemetryBuffer.GetMappedData(ref _importedData._telemetry);
                 _importedData.GetPlayerID();
-                playerVehicleScoring = _importedData.player.playerVehicleScoring;
+                _importedData.GetPlayerTelemetry();
 
-                for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
-                {
-                    rF2VehicleTelemetry tmp = _importedData._telemetry.mVehicles[i];
-                    if (tmp.mID == _importedData.player.playerID)
-                    {
-                        playerVehicleTelemetry = _importedData._telemetry.mVehicles[i];
-                        _importedData.player.playerVehicleTelemetry = playerVehicleTelemetry;
-                    }
-                }
+                playerVehicleScoring = _importedData.player.playerVehicleScoring;
+                playerVehicleTelemetry = _importedData.player.playerVehicleTelemetry;
 
                 if (!isTelemetryDataCreated) {
                     _telemetryData = new TelemetryData(playerVehicleTelemetry.mTrackName);
@@ -97,8 +89,8 @@ namespace LmuOverlay
         private void NRGDisplay()
         {
             NRGProgressBar.Maximum = playerVehicleTelemetry.mFuelCapacity; 
-            NRGProgressBar.Value = playerVehicleTelemetry.mFuel * 100 * fuelRatio;
-            NRGText.Text = $"{Math.Round(playerVehicleTelemetry.mFuel * 100 * fuelRatio, 1)}%";
+            NRGProgressBar.Value = playerVehicleTelemetry.mFuel * fuelRatio;
+            NRGText.Text = $"{Math.Round(playerVehicleTelemetry.mFuel * fuelRatio, 1)}%";
         }
 
         private void CurrentLapDisplay()
@@ -113,14 +105,14 @@ namespace LmuOverlay
                 showingLastLap = true;
                 currentLap = playerVehicleScoring.mTotalLaps;
 
-                _XMLoperator.Add(new Lap(
-                        Encoding.ASCII.GetString(playerVehicleTelemetry.mTrackName).Trim('\0'),
-                        _importedData.currentSession,
-                        ConvertTimeToString(playerVehicleScoring.mLastSector1),
-                        ConvertTimeToString(playerVehicleScoring.mLastSector2 - playerVehicleScoring.mLastSector1),
-                        ConvertTimeToString(playerVehicleScoring.mLastLapTime - playerVehicleScoring.mLastSector2),
-                        ConvertTimeToString(playerVehicleScoring.mLastLapTime)
-                    ));
+                //_XMLoperator.Add(new Lap(
+                //        Encoding.ASCII.GetString(playerVehicleTelemetry.mTrackName).Trim('\0'),
+                //        _importedData.currentSession,
+                //        ConvertTimeToString(playerVehicleScoring.mLastSector1),
+                //        ConvertTimeToString(playerVehicleScoring.mLastSector2 - playerVehicleScoring.mLastSector1),
+                //        ConvertTimeToString(playerVehicleScoring.mLastLapTime - playerVehicleScoring.mLastSector2),
+                //        ConvertTimeToString(playerVehicleScoring.mLastLapTime)
+                //    ));
 
                 TimeDisplayHelper(BestSector1Time, playerVehicleScoring.mBestLapSector1);
                 TimeDisplayHelper(BestSector2Time, playerVehicleScoring.mBestLapSector2 - playerVehicleScoring.mBestLapSector1);
