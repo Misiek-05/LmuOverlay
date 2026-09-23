@@ -6,7 +6,6 @@ namespace LmuOverlay
     public partial class MainWindow : Window
     {
         private rF2ImportedData _importedData = new rF2ImportedData();
-        private bool connected = false;
         private XMLoperator _XMLoperator = new XMLoperator();
 
         public MainWindow()
@@ -28,7 +27,7 @@ namespace LmuOverlay
 
         private void PlayerBestLapsWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            Window playerBestLapWindow = new PlayerBestLapsWindow(_importedData);
+            Window playerBestLapWindow = new PlayerBestLapsWindow(_importedData, _XMLoperator);
             playerBestLapWindow.Show();
         }
 
@@ -37,13 +36,12 @@ namespace LmuOverlay
             try
             {
                 rFactor2Connect();
-                connected = true;
 
                 ConnectToGameButton.Visibility = Visibility.Hidden;
                 PlayerBestLapsWindowButton.Visibility = Visibility.Visible;
                 LeaderboardWindowButton.Visibility = Visibility.Visible;
                 TelemetryWindowButton.Visibility = Visibility.Visible;
-                ExportToXMLBUtton.Visibility = Visibility.Visible;
+                XMLButton.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
@@ -52,9 +50,21 @@ namespace LmuOverlay
                     "Shared Memory Error"
                 );
 
-                connected = false;
                 return;
             }
+        }
+        private void XMLBUtton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_XMLoperator.imported == false)
+            {
+                _XMLoperator.ImportFromXML();
+                XMLButton.Content = "Export Data";
+            }
+            else
+            {
+                _XMLoperator.ExportToXML();
+            }
+
         }
 
         private void rFactor2Connect()
@@ -77,9 +87,5 @@ namespace LmuOverlay
             _importedData._scoringInfo = _importedData._scoring.mScoringInfo;
         }
 
-        private void ExportToXMLBUtton_Click(object sender, RoutedEventArgs e)
-        {
-            _XMLoperator.ExportToXML();
-        }
     }
 }

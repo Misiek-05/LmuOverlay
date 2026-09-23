@@ -56,35 +56,36 @@ namespace LmuOverlay
 
                 for (int i = 0; i < _importedData._telemetry.mNumVehicles; i++)
                 {
-                    playerVehicleTelemetry = _importedData._telemetry.mVehicles[i];
-                    _importedData.player.playerVehicleTelemetry = playerVehicleTelemetry;
-
-                    if (!isTelemetryDataCreated) {
-                        _telemetryData = new TelemetryData(playerVehicleTelemetry.mTrackName);
-                        isTelemetryDataCreated = true;
-                    }
-
-                    if (playerVehicleTelemetry.mID == _importedData.player.playerID)
+                    rF2VehicleTelemetry tmp = _importedData._telemetry.mVehicles[i];
+                    if (tmp.mID == _importedData.player.playerID)
                     {
-                        SpeedKmhDisplay();
-                        GearDisplay();
-                        RpmDisplay();
-
-                        rF2Wheel[] wheels = playerVehicleTelemetry.mWheels;
-                        BreakTmpDisplay(wheels);
-                        TyreTmpDisplay(wheels);
-                        TyreWearDisplay(wheels);
-
-                        CurrentLapDisplay();
-                        FuelDisplay();
-                        NRGDisplay();
-                        ThrottleDisplay();
-                        BrakeDisplay();
-                        SteeringDisplay();
-
-                        TimeDisplay();
+                        playerVehicleTelemetry = _importedData._telemetry.mVehicles[i];
+                        _importedData.player.playerVehicleTelemetry = playerVehicleTelemetry;
                     }
                 }
+
+                if (!isTelemetryDataCreated) {
+                    _telemetryData = new TelemetryData(playerVehicleTelemetry.mTrackName);
+                    isTelemetryDataCreated = true;
+                }
+
+                SpeedKmhDisplay();
+                GearDisplay();
+                RpmDisplay();
+
+                rF2Wheel[] wheels = playerVehicleTelemetry.mWheels;
+                BreakTmpDisplay(wheels);
+                TyreTmpDisplay(wheels);
+                TyreWearDisplay(wheels);
+
+                CurrentLapDisplay();
+                FuelDisplay();
+                NRGDisplay();
+                ThrottleDisplay();
+                BrakeDisplay();
+                SteeringDisplay();
+
+                TimeDisplay();
             }
             catch (Exception ex)
             {
@@ -114,7 +115,7 @@ namespace LmuOverlay
 
                 _XMLoperator.Add(new Lap(
                         Encoding.ASCII.GetString(playerVehicleTelemetry.mTrackName).Trim('\0'),
-                        Encoding.ASCII.GetString(playerVehicleScoring.mDriverName).Trim('\0'),
+                        _importedData.currentSession,
                         ConvertTimeToString(playerVehicleScoring.mLastSector1),
                         ConvertTimeToString(playerVehicleScoring.mLastSector2 - playerVehicleScoring.mLastSector1),
                         ConvertTimeToString(playerVehicleScoring.mLastLapTime - playerVehicleScoring.mLastSector2),

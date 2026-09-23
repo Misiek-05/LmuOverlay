@@ -17,6 +17,6 @@
         <Button Grid.Row="1" Name="PlayerBestLapsWindowButton" Visibility="Hidden" Width="80" Height="40" Click="PlayerBestLapsWindowButton_Click" Content="Your laps" Margin="0, 0, 170, 0"/>
         <Button Grid.Row="1" Name="TelemetryWindowButton" Visibility="Hidden" Width="80" Height="40" Click="TelemetryWindowButton_Click" Content="Telemetry"/>
         <Button Grid.Row="1" Name="LeaderboardWindowButton" Visibility="Hidden" Width="80" Height="40" Click="LeaderboardWindowButton_Click" Content="Leaderboard" Margin="170, 0, 0, 0"/>
-        <Button Grid.Row="1" Name="ExportToXMLBUtton" Visibility="Hidden" Width="80" Height="40" Click="ExportToXMLBUtton_Click" Content="Export Data" Margin="340, 0, 0, 0"/>
+        <Button Grid.Row="1" Name="XMLButton" Visibility="Hidden" Width="80" Height="40" Click="XMLBUtton_Click" Content="Import Data" Margin="340, 0, 0, 0"/>
     </Grid>
 </Window>

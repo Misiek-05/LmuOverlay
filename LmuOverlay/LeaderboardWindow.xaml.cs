@@ -139,10 +139,10 @@ namespace LmuOverlay
             }
 
             double totalGapInFront = 0;
-            for (int i = driverIndex - 1; i >= 0; i--) 
+            for (int i = driverIndex; i > 0; i--) 
             { 
                 totalGapInFront += sortedDrivers[i].gapDouble;
-                sortedDrivers[i].gap = ConvertGapInFrontTimeToString(totalGapInFront);
+                sortedDrivers[i - 1].gap = ConvertGapInFrontTimeToString(totalGapInFront);
             }
 
         }

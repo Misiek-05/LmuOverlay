@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +22,32 @@ namespace LmuOverlay
     public partial class PlayerBestLapsWindow : Window
     {
         private DispatcherTimer _timer;
+        private XMLoperator _XMLoperator;
 
-        public PlayerBestLapsWindow(rF2ImportedData _importedData)
+        private ObservableCollection<Lap> playerScoreboard;
+        public ObservableCollection<Lap> PlayerScoreboard
         {
+            get { return playerScoreboard; }
+            set { playerScoreboard = value; }
+        }
+
+        public PlayerBestLapsWindow(rF2ImportedData _importedData, XMLoperator _XMLoperator)
+        {
+            DataContext = this;
+            playerScoreboard = new ObservableCollection<Lap>();
+
             InitializeComponent();
 
-            _timer = new DispatcherTimer();
+            this._XMLoperator = _XMLoperator;
+
+            string trackName = _importedData.GetTrackName();
+            var lapTimeOnTrack = _XMLoperator.laps.Where(lap => lap.track == trackName);
+            lapTimeOnTrack = lapTimeOnTrack.OrderBy(p => p.lapTime);
+
+            foreach (var lap in lapTimeOnTrack)
+            {
+                playerScoreboard.Add(lap);
+            }
 
             _timer = new DispatcherTimer
             {
@@ -36,6 +57,7 @@ namespace LmuOverlay
             _timer.Tick += UpdateBestLaps;
             _timer.Start();
         }
+
 
         private void UpdateBestLaps(object? sender, EventArgs e)
         {

@@ -26,7 +26,6 @@ namespace LmuOverlay
 
         // player data
         public Player player;
-        
 
         public rF2ImportedData() {
             player = new Player();
@@ -63,8 +62,11 @@ namespace LmuOverlay
             return Session.Race;    
         }
 
-
-
+        public string GetTrackName()
+        {
+            _telemetryBuffer.GetMappedData(ref _telemetry);
+            return $"{Encoding.ASCII.GetString(_telemetry.mVehicles[0].mTrackName).Trim('\0')}";
+        }
 
     }
 }

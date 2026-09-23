@@ -14,16 +14,28 @@ namespace LmuOverlay
 {
     public class XMLoperator
     {
-        private ObservableCollection<Lap> laps;
+        public ObservableCollection<Lap> laps { get; set; }
+        public bool imported { get; set; }
 
         public XMLoperator() 
         {
+            imported = false;
             laps = new ObservableCollection<Lap>();
         }
 
         public void Add(Lap lap)
         {
-            laps.Add(lap);
+            if (LapValidToAdd(lap))
+                laps.Add(lap);
+        }
+
+        public bool LapValidToAdd(Lap lap)
+        {
+            return !(lap.sector1.Contains("-")
+                || lap.sector2.Contains("-")
+                || lap.sector3.Contains("-")
+                || lap.lapTime.Contains("-")
+                || lap.lapTime == "0:00.000");
         }
 
         public void ExportToXML()
@@ -33,6 +45,21 @@ namespace LmuOverlay
             {
                 serializer.Serialize(writer, laps);
             }
+        }
+
+        public void ImportFromXML()
+        {
+            if (!File.Exists("LapTimes.xml")) return;
+
+            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Lap>));
+            using (StreamReader reader = new StreamReader("LapTimes.xml"))
+            {
+                var lapsImported = (ObservableCollection<Lap>)serializer.Deserialize(reader);
+
+                foreach (var lap in lapsImported)
+                    laps.Add(lap);
+            }
+            imported = true;
         }
     }
 }
