@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LmuOverlay"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="600">
+        Title="MainWindow" Height="400" Width="700">
     <Grid>
         
         <Grid.RowDefinitions>
@@ -13,10 +13,49 @@
             <RowDefinition Height=".2*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="1" Name="ConnectToGameButton" Width="80" Height="40" Click="ConnectToGameButton_Click" Content="Connect"/>
-        <Button Grid.Row="1" Name="PlayerBestLapsWindowButton" Visibility="Hidden" Width="80" Height="40" Click="PlayerBestLapsWindowButton_Click" Content="Your laps" Margin="0, 0, 170, 0"/>
-        <Button Grid.Row="1" Name="TelemetryWindowButton" Visibility="Hidden" Width="80" Height="40" Click="TelemetryWindowButton_Click" Content="Telemetry"/>
-        <Button Grid.Row="1" Name="LeaderboardWindowButton" Visibility="Hidden" Width="80" Height="40" Click="LeaderboardWindowButton_Click" Content="Leaderboard" Margin="170, 0, 0, 0"/>
-        <Button Grid.Row="1" Name="XMLButton" Visibility="Hidden" Width="80" Height="40" Click="XMLBUtton_Click" Content="Import Data" Margin="340, 0, 0, 0"/>
-    </Grid>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".65*"/>
+                <ColumnDefinition Width=".35*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <DataGrid Margin="4, 4, 4, 4" 
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding PlayerScoreboard}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn FontSize="12" Header="TRACK" Width="90" Binding="{Binding track}"/>
+                        <DataGridTextColumn FontSize="12" Header="SESSION" Width="60" Binding="{Binding session}"/>
+                        <DataGridTextColumn FontSize="12" Header="S1" Width="65" Binding="{Binding sector1}"/>
+                        <DataGridTextColumn FontSize="12" Header="S2" Width="65" Binding="{Binding sector2}"/>
+                        <DataGridTextColumn FontSize="12" Header="S3" Width="65" Binding="{Binding sector3}"/>
+                        <DataGridTextColumn FontSize="12" Header="LAP" Width="65" Binding="{Binding lapTime}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=".1*"/>
+                    <RowDefinition Height=".9*"/>
+                </Grid.RowDefinitions>
+
+                <ComboBox Margin="4" ItemsSource="{Binding Tracks}" />
+
+
+
+            </Grid>
+            
+        </Grid>
+        
+        
+        <Grid Grid.Row="1">
+            <Button Name="ConnectToGameButton" Width="80" Height="40" Click="ConnectToGameButton_Click" Content="Connect"/>
+            <Button Name="PlayerBestLapsWindowButton" Visibility="Hidden" Width="80" Height="40" Click="PlayerBestLapsWindowButton_Click" Content="Your laps" Margin="0, 0, 170, 0"/>
+            <Button Name="TelemetryWindowButton" Visibility="Hidden" Width="80" Height="40" Click="TelemetryWindowButton_Click" Content="Telemetry"/>
+            <Button Name="LeaderboardWindowButton" Visibility="Hidden" Width="80" Height="40" Click="LeaderboardWindowButton_Click" Content="Leaderboard" Margin="170, 0, 0, 0"/>
+            <Button Name="XMLButton" Visibility="Hidden" Width="80" Height="40" Click="XMLBUtton_Click" Content="Import Data" Margin="340, 0, 0, 0"/>
+        </Grid>
+        
+        </Grid>
 </Window>

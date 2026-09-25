@@ -60,7 +60,7 @@
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="P" Width="30" DisplayMemberBinding="{Binding place}"/>
-                            <GridViewColumn Header="DRIVER" Width="130" DisplayMemberBinding="{Binding driverName}"/>
+                            <GridViewColumn Header="DRIVER" Width="110" DisplayMemberBinding="{Binding driverName}"/>
                             <GridViewColumn Header="S1" Width="60" DisplayMemberBinding="{Binding sector1}"/>
                             <GridViewColumn Header="S2" Width="60" DisplayMemberBinding="{Binding sector2}"/>
                             <GridViewColumn Header="S3" Width="60" DisplayMemberBinding="{Binding sector3}"/>
