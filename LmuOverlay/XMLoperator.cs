@@ -21,6 +21,7 @@ namespace LmuOverlay
         {
             imported = false;
             laps = new ObservableCollection<Lap>();
+
         }
 
         public void Add(Lap lap)

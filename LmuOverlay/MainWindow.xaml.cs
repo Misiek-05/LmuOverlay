@@ -1,12 +1,14 @@
 ﻿using LmuOverlay.rFactor2Data;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
 
 namespace LmuOverlay
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private rF2ImportedData _importedData = new rF2ImportedData();
         private XMLoperator _XMLoperator = new XMLoperator();
@@ -16,6 +18,10 @@ namespace LmuOverlay
         private rF2VehicleTelemetry playerVehicleTelemetry;
         private int currentLap = 0;
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? name = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         private ObservableCollection<string> tracks;
         public ObservableCollection<string> Tracks
         {
@@ -23,12 +29,43 @@ namespace LmuOverlay
             set { tracks = value; }
         }
 
+        private string _selectedTrack;
+        public string SelectedTrack
+        {
+            get => _selectedTrack;
+            set
+            {
+                if (_selectedTrack == value) return;
+                _selectedTrack = value;
+                OnPropertyChanged();
+                SortTracksOnScoreboard();
+            }
+        }
+
+        public void SortTracksOnScoreboard()
+        {
+            if (_selectedTrack == "All") {
+                playerScoreboard.Clear();
+                foreach (var lap in _XMLoperator.laps)
+                    playerScoreboard.Add(lap);
+            } else
+            {
+                playerScoreboard.Clear();
+                foreach (var lap in _XMLoperator.laps)
+                    if (_selectedTrack == lap.track)
+                        playerScoreboard.Add(lap);
+            }
+        }
+
+
         private ObservableCollection<Lap> playerScoreboard;
         public ObservableCollection<Lap> PlayerScoreboard
         {
             get { return playerScoreboard; }
             set { playerScoreboard = value; }
         }
+
+
 
         public MainWindow()
         {
@@ -38,7 +75,6 @@ namespace LmuOverlay
 
             InitializeComponent();
 
-            currentLap = _importedData.player.playerVehicleScoring.mTotalLaps;
         }
 
         private void UpdateLapData(object? sender, EventArgs e)
@@ -70,6 +106,7 @@ namespace LmuOverlay
 
             }
         }
+
         private string ConvertTimeToString(double time)
         {
             int minutes = (int)(time / 60);
@@ -122,6 +159,7 @@ namespace LmuOverlay
                     "Shared Memory Error"
                 );
 
+                XMLButton.Visibility = Visibility.Visible;
                 return;
             }
         }
@@ -135,6 +173,7 @@ namespace LmuOverlay
                     playerScoreboard.Add(lap);
                     AddTrack(lap);
                 }
+                AddTrack(new Lap("All", 0, "", "", "", ""));
                 XMLButton.Content = "Export Data";
             }
             else
