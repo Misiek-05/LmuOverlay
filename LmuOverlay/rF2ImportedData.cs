@@ -12,7 +12,8 @@ namespace LmuOverlay
         Practice = 0,
         Qualify = 1,
         Warmup = 2,
-        Race = 3
+        Race = 3,
+        All = 4
     };
 
     public class rF2ImportedData

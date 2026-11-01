@@ -1,6 +1,8 @@
 ﻿using LmuOverlay.rFactor2Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -48,12 +50,14 @@ namespace LmuOverlay
                 playerScoreboard.Clear();
                 foreach (var lap in _XMLoperator.laps)
                     playerScoreboard.Add(lap);
+                AverageGrid.Visibility = Visibility.Hidden;
             } else
             {
                 playerScoreboard.Clear();
                 foreach (var lap in _XMLoperator.laps)
                     if (_selectedTrack == lap.track)
                         playerScoreboard.Add(lap);
+                AverageGrid.Visibility = Visibility.Visible;
             }
         }
 
@@ -65,13 +69,77 @@ namespace LmuOverlay
             set { playerScoreboard = value; }
         }
 
+        private ObservableCollection<Session> sessions;
+        public ObservableCollection<Session> Sessions
+        {
+            get { return sessions; }
+            set { sessions = value; }
+        }
 
+        private Session _selectedSession;
+        public Session SelectedSession
+        {
+            get => _selectedSession;
+            set
+            {
+                if (_selectedSession == value) return;
+                _selectedSession = value;
+                OnPropertyChanged();
+                AverageTime();
+            }
+        }
+
+        private void AverageTime()
+        {
+            if (playerScoreboard == null || playerScoreboard.Count == 0)
+            {
+                ClearAverages();
+                return;
+            }
+
+            var laps = (_selectedSession == Session.All)
+                ? playerScoreboard.ToList()
+                : playerScoreboard.Where(l => l.session == _selectedSession).ToList();
+
+            var timed = laps
+                .Select(l => new { Lap = l, Time = ParseTime(l.lapTime) })
+                .Where(x => x.Time > 0)
+                .ToList();
+
+            if (timed.Count == 0)
+            {
+                ClearAverages();
+                return;
+            }
+
+            double best = timed.Min(x => x.Time);
+            var valid = timed.Where(x => x.Time <= best * 1.07).ToList(); 
+
+            double avgS1 = valid.Average(x => ParseTime(x.Lap.sector1));
+            double avgS2 = valid.Average(x => ParseTime(x.Lap.sector2));
+            double avgS3 = valid.Average(x => ParseTime(x.Lap.sector3));
+            double avgLap = valid.Average(x => x.Time);
+
+            Sector1Time.Text = $"Average Sector 1: {ConvertTimeToString(avgS1)}";
+            Sector2Time.Text = $"Average Sector 2: {ConvertTimeToString(avgS2)}";
+            Sector3Time.Text = $"Average Sector 3: {ConvertTimeToString(avgS3)}";
+            LapTime.Text = $"Average lap time: {ConvertTimeToString(avgLap)}";
+        }
+
+        private void ClearAverages()
+        {
+            Sector1Time.Text = "Average Sector 1: -";
+            Sector2Time.Text = "Average Sector 2: -";
+            Sector3Time.Text = "Average Sector 3: -";
+            LapTime.Text = "Average lap time: -";
+        }
 
         public MainWindow()
         {
             DataContext = this;
             playerScoreboard = new ObservableCollection<Lap>();
             tracks = new ObservableCollection<string>();
+            sessions = new ObservableCollection<Session> {Session.Practice, Session.Qualify, Session.Race, Session.All};
 
             InitializeComponent();
 
@@ -112,6 +180,15 @@ namespace LmuOverlay
             int minutes = (int)(time / 60);
             double seconds = time % 60;
             return $"{minutes}:{seconds:00.000}";
+        }
+        private static double ParseTime(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return 0;
+            var parts = s.Split(':');
+            if (parts.Length != 2) return 0;
+
+            return int.Parse(parts[0]) * 60 +
+                   double.Parse(parts[1].Replace(',', '.'), CultureInfo.InvariantCulture);
         }
 
         private void TelemetryWindowButton_Click(object sender, RoutedEventArgs e)
