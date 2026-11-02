@@ -247,11 +247,6 @@
                         <ColumnDefinition Width=".75*"/>
                     </Grid.ColumnDefinitions>
 
-                    
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="NRG" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-                    <ProgressBar Name="NRGProgressBar" Foreground="Blue" Background="Transparent" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Margin="2, 2, 2, 2" BorderBrush="Transparent"/>
-                    <TextBlock Name="NRGText" Grid.Row="1" Grid.Column="1" Text="50.0%" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
-                    
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="FUEL" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
                     <ProgressBar Name="FuelProgressBar" Foreground="Red" Background="Transparent" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Margin="2, 2, 2, 2" BorderBrush="Transparent" />
                     <TextBlock Name="FuelText" Grid.Row="2" Grid.Column="1" Text="50.0%" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>

@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfLap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,788</sector1>
+    <sector2>0:38,285</sector2>
+    <sector3>0:46,325</sector3>
+    <lapTime>1:47,398</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:26,864</sector1>
+    <sector2>0:27,533</sector2>
+    <sector3>0:20,972</sector3>
+    <lapTime>1:15,369</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Qualify</session>
+    <sector1>0:37,777</sector1>
+    <sector2>1:34,714</sector2>
+    <sector3>1:48,624</sector3>
+    <lapTime>4:01,115</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Practice</session>
+    <sector1>0:39,182</sector1>
+    <sector2>1:05,624</sector2>
+    <sector3>0:40,867</sector3>
+    <lapTime>2:25,673</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Qualify</session>
+    <sector1>0:38,245</sector1>
+    <sector2>0:49,918</sector2>
+    <sector3>0:45,902</sector3>
+    <lapTime>2:14,065</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Qualify</session>
+    <sector1>0:39,166</sector1>
+    <sector2>0:29,240</sector2>
+    <sector3>0:39,248</sector3>
+    <lapTime>1:47,654</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Practice</session>
+    <sector1>0:26,990</sector1>
+    <sector2>0:38,763</sector2>
+    <sector3>0:37,632</sector3>
+    <lapTime>1:43,385</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:23,605</sector1>
+    <sector2>0:39,531</sector2>
+    <sector3>0:45,705</sector3>
+    <lapTime>1:48,841</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:26,284</sector1>
+    <sector2>0:26,345</sector2>
+    <sector3>0:20,384</sector3>
+    <lapTime>1:13,013</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:42,769</sector1>
+    <sector2>1:35,157</sector2>
+    <sector3>1:49,812</sector3>
+    <lapTime>4:07,738</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Qualify</session>
+    <sector1>0:42,414</sector1>
+    <sector2>1:13,643</sector2>
+    <sector3>0:53,332</sector3>
+    <lapTime>2:49,389</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Qualify</session>
+    <sector1>0:37,313</sector1>
+    <sector2>0:49,484</sector2>
+    <sector3>0:45,249</sector3>
+    <lapTime>2:12,046</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Qualify</session>
+    <sector1>0:38,520</sector1>
+    <sector2>0:28,570</sector2>
+    <sector3>0:38,623</sector3>
+    <lapTime>1:45,714</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Practice</session>
+    <sector1>0:26,791</sector1>
+    <sector2>0:38,037</sector2>
+    <sector3>0:37,261</sector3>
+    <lapTime>1:42,090</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,796</sector1>
+    <sector2>0:39,710</sector2>
+    <sector3>0:46,336</sector3>
+    <lapTime>1:48,841</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:25,937</sector1>
+    <sector2>0:26,175</sector2>
+    <sector3>0:20,195</sector3>
+    <lapTime>1:12,308</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:38,115</sector1>
+    <sector2>1:35,118</sector2>
+    <sector3>1:50,136</sector3>
+    <lapTime>4:03,369</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Qualify</session>
+    <sector1>0:42,883</sector1>
+    <sector2>1:13,006</sector2>
+    <sector3>0:44,566</sector3>
+    <lapTime>2:40,455</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Qualify</session>
+    <sector1>0:36,663</sector1>
+    <sector2>0:49,592</sector2>
+    <sector3>0:45,173</sector3>
+    <lapTime>2:11,427</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Qualify</session>
+    <sector1>0:37,646</sector1>
+    <sector2>0:28,175</sector2>
+    <sector3>0:38,180</sector3>
+    <lapTime>1:44,002</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Practice</session>
+    <sector1>0:26,708</sector1>
+    <sector2>0:38,460</sector2>
+    <sector3>0:36,950</sector3>
+    <lapTime>1:42,118</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,791</sector1>
+    <sector2>0:38,295</sector2>
+    <sector3>0:45,832</sector3>
+    <lapTime>1:46,917</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:25,940</sector1>
+    <sector2>0:26,274</sector2>
+    <sector3>0:20,450</sector3>
+    <lapTime>1:12,664</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:38,205</sector1>
+    <sector2>1:36,375</sector2>
+    <sector3>1:49,667</sector3>
+    <lapTime>4:04,247</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:51,243</sector1>
+    <sector2>1:17,781</sector2>
+    <sector3>0:46,048</sector3>
+    <lapTime>2:55,073</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:46,967</sector1>
+    <sector2>0:51,690</sector2>
+    <sector3>0:46,892</sector3>
+    <lapTime>2:25,549</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Qualify</session>
+    <sector1>0:37,350</sector1>
+    <sector2>0:28,035</sector2>
+    <sector3>0:38,046</sector3>
+    <lapTime>1:43,431</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:29,397</sector1>
+    <sector2>0:39,682</sector2>
+    <sector3>0:43,828</sector3>
+    <lapTime>1:52,908</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,629</sector1>
+    <sector2>0:38,486</sector2>
+    <sector3>0:45,896</sector3>
+    <lapTime>1:47,010</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:25,887</sector1>
+    <sector2>0:25,948</sector2>
+    <sector3>0:20,487</sector3>
+    <lapTime>1:12,322</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:38,214</sector1>
+    <sector2>1:34,619</sector2>
+    <sector3>1:49,143</sector3>
+    <lapTime>4:01,977</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:43,442</sector1>
+    <sector2>1:15,826</sector2>
+    <sector3>0:46,229</sector3>
+    <lapTime>2:45,496</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,800</sector1>
+    <sector2>0:50,428</sector2>
+    <sector3>0:45,695</sector3>
+    <lapTime>2:12,923</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Qualify</session>
+    <sector1>0:37,262</sector1>
+    <sector2>0:28,072</sector2>
+    <sector3>0:38,057</sector3>
+    <lapTime>1:43,392</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:26,676</sector1>
+    <sector2>0:38,162</sector2>
+    <sector3>0:37,083</sector3>
+    <lapTime>1:41,921</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,633</sector1>
+    <sector2>0:38,098</sector2>
+    <sector3>0:45,754</sector3>
+    <lapTime>1:46,485</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:25,590</sector1>
+    <sector2>0:26,048</sector2>
+    <sector3>0:20,861</sector3>
+    <lapTime>1:12,499</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:38,006</sector1>
+    <sector2>1:34,722</sector2>
+    <sector3>1:49,875</sector3>
+    <lapTime>4:02,603</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:43,326</sector1>
+    <sector2>1:15,448</sector2>
+    <sector3>0:46,024</sector3>
+    <lapTime>2:44,798</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,412</sector1>
+    <sector2>0:49,382</sector2>
+    <sector3>0:45,069</sector3>
+    <lapTime>2:10,862</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:51,733</sector1>
+    <sector2>0:46,350</sector2>
+    <sector3>0:40,082</sector3>
+    <lapTime>2:18,165</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:26,582</sector1>
+    <sector2>0:37,737</sector2>
+    <sector3>0:36,794</sector3>
+    <lapTime>1:41,113</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:25,441</sector1>
+    <sector2>0:39,207</sector2>
+    <sector3>0:46,756</sector3>
+    <lapTime>1:51,404</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:36,360</sector1>
+    <sector2>0:27,458</sector2>
+    <sector3>0:20,289</sector3>
+    <lapTime>1:24,107</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Qualify</session>
+    <sector1>0:37,956</sector1>
+    <sector2>1:34,163</sector2>
+    <sector3>1:50,076</sector3>
+    <lapTime>4:02,195</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:42,450</sector1>
+    <sector2>1:15,598</sector2>
+    <sector3>0:48,503</sector3>
+    <lapTime>2:46,551</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:37,107</sector1>
+    <sector2>0:51,647</sector2>
+    <sector3>0:45,131</sector3>
+    <lapTime>2:13,885</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,896</sector1>
+    <sector2>0:28,671</sector2>
+    <sector3>0:38,535</sector3>
+    <lapTime>1:45,102</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:26,508</sector1>
+    <sector2>0:37,647</sector2>
+    <sector3>0:36,654</sector3>
+    <lapTime>1:40,808</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:23,787</sector1>
+    <sector2>0:40,023</sector2>
+    <sector3>0:46,007</sector3>
+    <lapTime>1:49,817</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,151</sector1>
+    <sector2>0:26,305</sector2>
+    <sector3>0:20,206</sector3>
+    <lapTime>1:12,663</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:46,572</sector1>
+    <sector2>1:36,634</sector2>
+    <sector3>1:53,761</sector3>
+    <lapTime>4:16,967</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:43,319</sector1>
+    <sector2>1:16,025</sector2>
+    <sector3>0:45,771</sector3>
+    <lapTime>2:45,115</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,386</sector1>
+    <sector2>1:02,233</sector2>
+    <sector3>0:46,542</sector3>
+    <lapTime>2:25,161</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,737</sector1>
+    <sector2>0:28,603</sector2>
+    <sector3>0:38,580</sector3>
+    <lapTime>1:44,919</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:36,311</sector1>
+    <sector2>0:41,819</sector2>
+    <sector3>0:38,033</sector3>
+    <lapTime>1:56,163</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:23,023</sector1>
+    <sector2>0:38,569</sector2>
+    <sector3>0:45,940</sector3>
+    <lapTime>1:47,531</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,321</sector1>
+    <sector2>0:26,270</sector2>
+    <sector3>0:20,568</sector3>
+    <lapTime>1:13,158</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:38,203</sector1>
+    <sector2>1:35,704</sector2>
+    <sector3>1:50,608</sector3>
+    <lapTime>4:04,515</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:42,564</sector1>
+    <sector2>1:15,526</sector2>
+    <sector3>1:01,138</sector3>
+    <lapTime>2:59,228</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,763</sector1>
+    <sector2>0:49,586</sector2>
+    <sector3>0:45,124</sector3>
+    <lapTime>2:11,473</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,687</sector1>
+    <sector2>0:28,379</sector2>
+    <sector3>0:38,356</sector3>
+    <lapTime>1:44,421</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,508</sector1>
+    <sector2>0:39,116</sector2>
+    <sector3>0:37,373</sector3>
+    <lapTime>1:42,997</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,853</sector1>
+    <sector2>0:44,355</sector2>
+    <sector3>0:46,834</sector3>
+    <lapTime>1:54,042</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,341</sector1>
+    <sector2>0:29,319</sector2>
+    <sector3>0:20,398</sector3>
+    <lapTime>1:16,058</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:37,831</sector1>
+    <sector2>1:36,724</sector2>
+    <sector3>1:49,338</sector3>
+    <lapTime>4:03,893</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:43,021</sector1>
+    <sector2>1:15,428</sector2>
+    <sector3>0:47,580</sector3>
+    <lapTime>2:46,029</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,542</sector1>
+    <sector2>0:49,244</sector2>
+    <sector3>0:45,670</sector3>
+    <lapTime>2:11,456</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,441</sector1>
+    <sector2>0:28,351</sector2>
+    <sector3>0:39,219</sector3>
+    <lapTime>1:45,011</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,455</sector1>
+    <sector2>0:39,917</sector2>
+    <sector3>0:37,487</sector3>
+    <lapTime>1:43,858</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Practice</session>
+    <sector1>0:22,857</sector1>
+    <sector2>0:38,562</sector2>
+    <sector3>0:49,002</sector3>
+    <lapTime>1:50,421</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,228</sector1>
+    <sector2>0:26,843</sector2>
+    <sector3>0:20,754</sector3>
+    <lapTime>1:13,824</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:37,922</sector1>
+    <sector2>1:34,900</sector2>
+    <sector3>1:51,601</sector3>
+    <lapTime>4:04,424</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Race</session>
+    <sector1>0:42,886</sector1>
+    <sector2>1:15,237</sector2>
+    <sector3>0:47,816</sector3>
+    <lapTime>2:45,940</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,373</sector1>
+    <sector2>0:49,126</sector2>
+    <sector3>0:44,727</sector3>
+    <lapTime>2:10,226</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,416</sector1>
+    <sector2>0:29,255</sector2>
+    <sector3>0:38,396</sector3>
+    <lapTime>1:45,068</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,634</sector1>
+    <sector2>0:38,113</sector2>
+    <sector3>0:37,391</sector3>
+    <lapTime>1:42,138</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:23,400</sector1>
+    <sector2>0:38,956</sector2>
+    <sector3>0:47,036</sector3>
+    <lapTime>1:49,391</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,840</sector1>
+    <sector2>0:27,528</sector2>
+    <sector3>0:20,174</sector3>
+    <lapTime>1:14,542</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:38,446</sector1>
+    <sector2>1:34,787</sector2>
+    <sector3>1:52,439</sector3>
+    <lapTime>4:05,672</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Practice</session>
+    <sector1>0:48,095</sector1>
+    <sector2>1:15,613</sector2>
+    <sector3>0:46,647</sector3>
+    <lapTime>2:50,356</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,276</sector1>
+    <sector2>0:49,810</sector2>
+    <sector3>0:45,091</sector3>
+    <lapTime>2:11,178</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,210</sector1>
+    <sector2>0:28,783</sector2>
+    <sector3>0:39,746</sector3>
+    <lapTime>1:45,740</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,537</sector1>
+    <sector2>0:38,493</sector2>
+    <sector3>0:37,088</sector3>
+    <lapTime>1:42,119</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:23,103</sector1>
+    <sector2>0:38,827</sector2>
+    <sector3>0:46,438</sector3>
+    <lapTime>1:48,368</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:25,868</sector1>
+    <sector2>0:26,335</sector2>
+    <sector3>0:20,711</sector3>
+    <lapTime>1:12,914</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:37,757</sector1>
+    <sector2>1:34,940</sector2>
+    <sector3>1:48,575</sector3>
+    <lapTime>4:01,273</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Qualify</session>
+    <sector1>0:44,101</sector1>
+    <sector2>1:13,404</sector2>
+    <sector3>0:46,128</sector3>
+    <lapTime>2:43,633</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit of the Americas</track>
+    <session>Race</session>
+    <sector1>0:36,599</sector1>
+    <sector2>0:49,123</sector2>
+    <sector3>0:45,031</sector3>
+    <lapTime>2:10,754</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,443</sector1>
+    <sector2>0:28,529</sector2>
+    <sector3>0:38,380</sector3>
+    <lapTime>1:44,352</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,898</sector1>
+    <sector2>0:38,452</sector2>
+    <sector3>0:36,927</sector3>
+    <lapTime>1:42,277</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:22,915</sector1>
+    <sector2>0:38,625</sector2>
+    <sector3>0:46,068</sector3>
+    <lapTime>1:47,609</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:25,902</sector1>
+    <sector2>0:26,424</sector2>
+    <sector3>0:20,740</sector3>
+    <lapTime>1:13,066</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Qualify</session>
+    <sector1>0:37,832</sector1>
+    <sector2>1:34,346</sector2>
+    <sector3>1:49,411</sector3>
+    <lapTime>4:01,588</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de Spa-Francorchamps</track>
+    <session>Qualify</session>
+    <sector1>0:42,128</sector1>
+    <sector2>1:12,532</sector2>
+    <sector3>0:44,961</sector3>
+    <lapTime>2:39,621</lapTime>
+  </Lap>
+  <Lap>
+    <track>Fuji Speedway</track>
+    <session>Race</session>
+    <sector1>0:37,408</sector1>
+    <sector2>0:28,240</sector2>
+    <sector3>0:38,049</sector3>
+    <lapTime>1:43,697</lapTime>
+  </Lap>
+  <Lap>
+    <track>Monza Curva Grande Circuit</track>
+    <session>Race</session>
+    <sector1>0:26,574</sector1>
+    <sector2>0:39,750</sector2>
+    <sector3>0:36,870</sector3>
+    <lapTime>1:43,193</lapTime>
+  </Lap>
+  <Lap>
+    <track>Algarve International Circuit</track>
+    <session>Qualify</session>
+    <sector1>0:22,506</sector1>
+    <sector2>0:38,381</sector2>
+    <sector3>0:45,633</sector3>
+    <lapTime>1:46,520</lapTime>
+  </Lap>
+  <Lap>
+    <track>Lusail Short Circuit</track>
+    <session>Race</session>
+    <sector1>0:25,761</sector1>
+    <sector2>0:26,610</sector2>
+    <sector3>0:20,260</sector3>
+    <lapTime>1:12,630</lapTime>
+  </Lap>
+  <Lap>
+    <track>Circuit de la Sarthe</track>
+    <session>Race</session>
+    <sector1>0:43,766</sector1>
+    <sector2>1:37,116</sector2>
+    <sector3>1:50,031</sector3>
+    <lapTime>4:10,913</lapTime>
+  </Lap>
+</ArrayOfLap>

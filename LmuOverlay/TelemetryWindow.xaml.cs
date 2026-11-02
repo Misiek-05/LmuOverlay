@@ -24,9 +24,6 @@ namespace LmuOverlay
         private DateTime lastLapDisplayUntil;
         private bool isTelemetryDataCreated = false;
 
-        // fuelRatio is not in shared memory - basic value is 0.9
-        private double fuelRatio = 0.9;
-
         private DispatcherTimer _timer;
         public TelemetryWindow(rF2ImportedData _importedData, XMLoperator _XMLoperator)
         {
@@ -84,13 +81,6 @@ namespace LmuOverlay
                 MessageBox.Show(ex.ToString());
             }
             
-        }
-
-        private void NRGDisplay()
-        {
-            NRGProgressBar.Maximum = playerVehicleTelemetry.mFuelCapacity; 
-            NRGProgressBar.Value = playerVehicleTelemetry.mFuel * fuelRatio;
-            NRGText.Text = $"{Math.Round(playerVehicleTelemetry.mFuel * fuelRatio, 1)}%";
         }
 
         private void CurrentLapDisplay()
